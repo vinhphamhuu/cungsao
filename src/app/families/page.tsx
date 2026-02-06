@@ -1,0 +1,95 @@
+import { getFamilies } from "@/app/actions/family-actions"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Plus } from "lucide-react"
+import { CreateFamilyDialog } from "@/components/families/create-family-dialog"
+import { getAreas, getGroups } from "@/app/actions/lookup-actions"
+
+import { FamilyFilters } from "@/components/families/family-filters"
+import { FamilyNameTooltip } from "@/components/families/family-name-tooltip"
+import { DuplicateFamilyDialog } from "@/components/families/duplicate-family-dialog"
+
+export default async function FamiliesPage(props: {
+    searchParams?: Promise<{
+        query?: string
+        areaId?: string
+        groupId?: string
+    }>
+}) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
+    const areaId = searchParams?.areaId ? parseInt(searchParams.areaId) : undefined
+    const groupId = searchParams?.groupId ? parseInt(searchParams.groupId) : undefined
+
+    const families = await getFamilies(query, areaId, groupId)
+    const areas = await getAreas()
+    const groups = await getGroups()
+
+    return (
+        <div className="space-y-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Danh sách Gia Đình</h1>
+                    <p className="text-muted-foreground">Quản lý các hộ gia đình và thành viên.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <CreateFamilyDialog areas={areas} groups={groups} />
+                </div>
+            </div>
+
+            <FamilyFilters areas={areas} groups={groups} />
+
+            <div className="rounded-md border">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Tên Gia Đình</TableHead>
+                            <TableHead>Người Đại Diện</TableHead>
+                            <TableHead>Khu vực</TableHead>
+                            <TableHead>Nhóm</TableHead>
+                            <TableHead>Thành viên</TableHead>
+                            <TableHead className="text-right">Hành động</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {families.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={6} className="text-center h-24">Chưa có gia đình nào.</TableCell>
+                            </TableRow>
+                        ) : families.map((family) => (
+                            <TableRow key={family.id}>
+                                <TableCell className="font-medium">
+                                    <FamilyNameTooltip
+                                        familyId={family.id}
+                                        familyName={family.name}
+                                        members={family.members}
+                                    />
+                                </TableCell>
+                                <TableCell>{family.representative?.fullName || "Chưa có"}</TableCell>
+                                <TableCell>{family.area?.name}</TableCell>
+                                <TableCell>{family.group?.name}</TableCell>
+                                <TableCell>{family.members.length}</TableCell>
+                                <TableCell className="text-right">
+                                    <div className="flex justify-end items-center gap-1">
+                                        <DuplicateFamilyDialog sourceFamily={family as any} areas={areas} groups={groups} />
+                                        <Button variant="ghost" size="sm" asChild>
+                                            <Link href={`/families/${family.id}`}>Chi tiết</Link>
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+    )
+}

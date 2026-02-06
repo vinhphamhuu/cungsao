@@ -1,0 +1,146 @@
+'use server'
+
+import { prisma } from '@/lib/db'
+import { revalidatePath } from 'next/cache'
+
+export async function getFamilies(query?: string, areaId?: number, groupId?: number) {
+    const where: any = {}
+
+    if (query) {
+        where.OR = [
+            { name: { contains: query, mode: 'insensitive' as const } },
+            { representative: { fullName: { contains: query, mode: 'insensitive' as const } } }
+        ]
+    }
+
+    if (areaId) where.areaId = areaId
+    if (groupId) where.groupId = groupId
+
+    return await prisma.family.findMany({
+        where,
+        include: {
+            group: true,
+            area: true,
+            representative: true,
+            members: {
+                select: {
+                    id: true,
+                    fullName: true,
+                    birthYear: true,
+                    gender: true,
+                },
+            },
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    })
+}
+
+export async function createFamily(formData: FormData) {
+    // Parsing logic or pass raw object?
+    // Let's assume we pass an object, usually better for type safety with Zod
+    // But strictly 'use server' with non-form data works if it's serializable.
+}
+
+// For now, let's implement structured actions accepting objects or FormData.
+// I'll prefer typed objects.
+
+export type CreateFamilyDTO = {
+    name: string
+    groupId: number
+    areaId: number
+}
+
+export async function createFamilyAction(data: CreateFamilyDTO) {
+    try {
+        const family = await prisma.family.create({
+            data: {
+                name: data.name,
+                groupId: data.groupId,
+                areaId: data.areaId,
+            },
+        })
+        revalidatePath('/')
+        return { success: true, data: family }
+    } catch (error) {
+        return { success: false, error: 'Failed to create family' }
+    }
+}
+
+export async function updateFamilyAction(id: number, data: Partial<CreateFamilyDTO>) {
+    try {
+        const family = await prisma.family.update({
+            where: { id },
+            data: {
+                ...data,
+            },
+        })
+        revalidatePath('/')
+        return { success: true, data: family }
+    } catch (error) {
+        return { success: false, error: 'Failed to update family' }
+    }
+}
+
+export type CreateFamilyWithMembersDTO = {
+    name: string
+    groupId: number
+    areaId: number
+    members: {
+        fullName: string
+        birthYear: number
+        gender: "MALE" | "FEMALE"
+    }[]
+}
+
+export async function createFamilyWithMembersAction(data: CreateFamilyWithMembersDTO) {
+    try {
+        const result = await prisma.$transaction(async (tx) => {
+            // 1. Create family
+            const family = await tx.family.create({
+                data: {
+                    name: data.name,
+                    groupId: data.groupId,
+                    areaId: data.areaId,
+                },
+            })
+
+            // 2. Create members
+            if (data.members.length > 0) {
+                await tx.member.createMany({
+                    data: data.members.map(m => ({
+                        ...m,
+                        familyId: family.id
+                    }))
+                })
+            }
+
+            return family
+        })
+
+        revalidatePath('/')
+        return { success: true, data: result }
+    } catch (error) {
+        console.error("Create family with members error:", error)
+        return { success: false, error: 'Failed to create family with members' }
+    }
+}
+
+export async function deleteFamilyAction(id: number) {
+    try {
+        // Delete members first? No, cascade usually handles it or we define logic.
+        // Prisma cascade delete:
+        await prisma.member.deleteMany({
+            where: { familyId: id }
+        })
+
+        await prisma.family.delete({
+            where: { id },
+        })
+        revalidatePath('/')
+        return { success: true }
+    } catch (error) {
+        return { success: false, error: 'Failed to delete family' }
+    }
+}

@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Area {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  families  Family[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Group {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  families    Family[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Family {
+  id               Int      @id @default(autoincrement())
+  name             String
+  representativeId Int?     @unique // One-to-one with Member (optional initially)
+  groupId          Int
+  areaId           Int
+  group            Group    @relation(fields: [groupId], references: [id])
+  area             Area     @relation(fields: [areaId], references: [id])
+  members          Member[] @relation("FamilyMembers")
+  representative   Member?  @relation("FamilyRepresentative", fields: [representativeId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Member {
+  id                     Int      @id @default(autoincrement())
+  fullName               String
+  birthYear              Int
+  gender                 Gender
+  familyId               Int
+  family                 Family   @relation("FamilyMembers", fields: [familyId], references: [id])
+  representedFamily      Family?  @relation("FamilyRepresentative")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
