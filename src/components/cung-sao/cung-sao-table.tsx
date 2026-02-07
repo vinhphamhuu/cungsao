@@ -87,7 +87,7 @@ export function CungSaoTable({ initMembers, areas, groups }: CungSaoTableProps) 
                 </Select>
             </div>
 
-            <div className="rounded-md border p-4 bg-card">
+            <div className="glass-card p-4">
                 <div className="text-sm text-muted-foreground mb-4">
                     Tìm thấy {filteredData.length} kết quả.
                 </div>

@@ -30,7 +30,7 @@ export function MemberList({ members, familyId }: MemberListProps) {
     }
 
     return (
-        <div className="border rounded-md">
+        <div className="overflow-hidden">
             <Table>
                 <TableHeader>
                     <TableRow>

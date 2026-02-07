@@ -36,7 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <MainNav />
-          <main className="flex-1 container mx-auto py-6 px-4">
+          <main className="flex-1 container mx-auto pt-24 pb-12 px-4">
             {children}
           </main>
         </ThemeProvider>

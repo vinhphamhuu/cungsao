@@ -47,7 +47,7 @@ export default async function FamiliesPage(props: {
 
             <FamilyFilters areas={areas} groups={groups} />
 
-            <div className="rounded-md border">
+            <div className="glass-card overflow-hidden">
                 <Table>
                     <TableHeader>
                         <TableRow>
