@@ -61,7 +61,7 @@ export default async function FamilyDetailPage({ params }: FamilyDetailPageProps
                     </p>
                 </div>
                 <div className="ml-auto flex items-center gap-2">
-                    <DuplicateFamilyDialog sourceFamily={family as any} areas={areas} groups={groups} />
+                    <DuplicateFamilyDialog sourceFamily={family as any} areas={areas} groups={groups} showText />
                     <FamilyQR familyId={family.id} familyName={family.name} />
                 </div>
             </div>

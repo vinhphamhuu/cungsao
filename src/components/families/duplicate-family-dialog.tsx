@@ -42,9 +42,10 @@ interface DuplicateFamilyDialogProps {
     }
     areas: Area[]
     groups: Group[]
+    showText?: boolean
 }
 
-export function DuplicateFamilyDialog({ sourceFamily, areas, groups }: DuplicateFamilyDialogProps) {
+export function DuplicateFamilyDialog({ sourceFamily, areas, groups, showText }: DuplicateFamilyDialogProps) {
     const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
@@ -94,19 +95,21 @@ export function DuplicateFamilyDialog({ sourceFamily, areas, groups }: Duplicate
         })
 
         setIsLoading(false)
-        if (result.success) {
+        if (result.success && result.data) {
             setOpen(false)
+            router.push(`/families/${result.data.id}`)
             router.refresh()
         } else {
-            alert("Lỗi: " + result.error)
+            alert("Lỗi: " + (result.error || "Không thể tạo gia đình"))
         }
     }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" title="Nhân bản">
+                <Button variant={showText ? "outline" : "ghost"} size="sm" title="Nhân bản" className={showText ? "gap-2" : ""}>
                     <Copy className="h-4 w-4" />
+                    {showText && <span>Nhân bản</span>}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[800px] max-h-[90vh] flex flex-col">
@@ -159,7 +162,7 @@ export function DuplicateFamilyDialog({ sourceFamily, areas, groups }: Duplicate
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <Label className="font-bold underline">Danh sách thành viên ({members.length})</Label>
-                            <Button size="sm" variant="outline" onClick={handleAddMember} type="button">
+                            <Button size="sm" variant="secondary" onClick={handleAddMember} type="button" className="hover:bg-blue-100 hover:text-blue-700 transition-colors">
                                 <Plus className="h-3 w-3 mr-1" /> Thêm nhanh
                             </Button>
                         </div>
@@ -219,9 +222,9 @@ export function DuplicateFamilyDialog({ sourceFamily, areas, groups }: Duplicate
                     </div>
                 </div>
 
-                <DialogFooter>
+                <DialogFooter className="gap-2">
                     <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>Huỷ</Button>
-                    <Button onClick={onSubmit} disabled={isLoading}>
+                    <Button onClick={onSubmit} disabled={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all active:scale-95">
                         {isLoading ? "Đang xử lý..." : "Xác nhận & Tạo mới"}
                     </Button>
                 </DialogFooter>

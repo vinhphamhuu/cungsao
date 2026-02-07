@@ -117,8 +117,11 @@ export function EditMemberDialog({ member }: EditMemberDialogProps) {
                             </Select>
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit" disabled={isLoading}>
+                    <DialogFooter className="gap-2">
+                        <Button variant="outline" type="button" onClick={() => setOpen(false)}>
+                            Hủy
+                        </Button>
+                        <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all active:scale-95">
                             {isLoading ? "Đang lưu..." : "Lưu Thay Đổi"}
                         </Button>
                     </DialogFooter>

@@ -20,7 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Plus } from "lucide-react"
+import { UserPlus } from "lucide-react"
 import { createMemberAction } from "@/app/actions/member-actions"
 import { Gender } from "@prisma/client"
 import { useRouter } from "next/navigation"
@@ -60,8 +60,8 @@ export function AddMemberDialog({ familyId }: { familyId: number }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" /> Thêm Thành Viên
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all hover:scale-105 active:scale-95">
+                    <UserPlus className="mr-2 h-4 w-4" /> Thêm Thành Viên
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -120,8 +120,11 @@ export function AddMemberDialog({ familyId }: { familyId: number }) {
                             </div>
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit" disabled={isLoading}>
+                    <DialogFooter className="gap-2">
+                        <Button variant="outline" type="button" onClick={() => setOpen(false)}>
+                            Hủy
+                        </Button>
+                        <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all active:scale-95">
                             {isLoading ? "Đang thêm..." : "Thêm Thành Viên"}
                         </Button>
                     </DialogFooter>

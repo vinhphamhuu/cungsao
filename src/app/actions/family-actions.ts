@@ -108,11 +108,31 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
 
             // 2. Create members
             if (data.members.length > 0) {
-                await tx.member.createMany({
-                    data: data.members.map(m => ({
-                        ...m,
+                // Create the first member separately to get its ID for representative
+                const firstMemberData = data.members[0]
+                const firstMember = await tx.member.create({
+                    data: {
+                        ...firstMemberData,
                         familyId: family.id
-                    }))
+                    }
+                })
+
+                // Create the rest of the members
+                if (data.members.length > 1) {
+                    await tx.member.createMany({
+                        data: data.members.slice(1).map(m => ({
+                            ...m,
+                            familyId: family.id
+                        }))
+                    })
+                }
+
+                // Update family with the first member as representative
+                return await tx.family.update({
+                    where: { id: family.id },
+                    data: {
+                        representativeId: firstMember.id
+                    }
                 })
             }
 
