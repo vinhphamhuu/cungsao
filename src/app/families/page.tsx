@@ -1,14 +1,14 @@
-import {getAreas, getFamilies, getGroups} from '@/app/actions'
-import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
 import Link from 'next/link'
 
-import {CreateFamilyDialog, FamilyFilters, FamilyNameTooltip, DuplicateFamilyDialog} from '@/components/families'
+import {getAreas, getFamilies, getGroups} from '@/app/actions'
+import {CreateFamilyDialog, DuplicateFamilyDialog, FamilyFilters, FamilyNameTooltip} from '@/components/families'
+import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
 
 export default async function FamiliesPage(props: {
   searchParams?: Promise<{
-    query?: string
     areaId?: string
     groupId?: string
+    query?: string
   }>
 }) {
   const searchParams = await props.searchParams

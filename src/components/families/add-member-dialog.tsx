@@ -1,6 +1,11 @@
 'use client'
 
+import {Gender} from '@prisma/client'
+import {UserPlus} from 'lucide-react'
+import {useRouter} from 'next/navigation'
 import {useState} from 'react'
+
+import {createMemberAction} from '@/app/actions'
 import {
   Button,
   Dialog,
@@ -18,10 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui'
-import {UserPlus} from 'lucide-react'
-import {createMemberAction} from '@/app/actions'
-import {Gender} from '@prisma/client'
-import {useRouter} from 'next/navigation'
 
 export function AddMemberDialog({familyId}: {familyId: number}) {
   const [open, setOpen] = useState(false)

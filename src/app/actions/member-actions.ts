@@ -1,16 +1,10 @@
 'use server'
 
-import {prisma} from '@/lib'
+import {Member} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
-import {Gender} from '@prisma/client'
 
-export type CreateMemberDTO = {
-  fullName: string
-  birthYear: number
-  gender: Gender
-  familyId: number
-  isRepresentative?: boolean
-}
+import {prisma} from '@/lib'
+import {ActionResponse, CreateMemberDTO} from '@/types'
 
 export async function getAllMembers() {
   return await prisma.member.findMany({
@@ -37,7 +31,7 @@ export async function getMembersByFamily(familyId: number) {
   })
 }
 
-export async function createMemberAction(data: CreateMemberDTO) {
+export async function createMemberAction(data: CreateMemberDTO): Promise<ActionResponse<Member>> {
   try {
     // Transaction to update representative if needed
     const member = await prisma.$transaction(async (tx) => {
@@ -67,7 +61,7 @@ export async function createMemberAction(data: CreateMemberDTO) {
   }
 }
 
-export async function updateMemberAction(id: number, data: Partial<CreateMemberDTO>) {
+export async function updateMemberAction(id: number, data: Partial<CreateMemberDTO>): Promise<ActionResponse> {
   try {
     await prisma.member.update({
       where: {id},
@@ -91,7 +85,7 @@ export async function updateMemberAction(id: number, data: Partial<CreateMemberD
   }
 }
 
-export async function deleteMemberAction(id: number) {
+export async function deleteMemberAction(id: number): Promise<ActionResponse> {
   try {
     await prisma.member.delete({
       where: {id},

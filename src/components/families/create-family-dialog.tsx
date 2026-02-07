@@ -1,6 +1,11 @@
 'use client'
 
+import {Area, Group} from '@prisma/client'
+import {Plus} from 'lucide-react'
+import {useRouter} from 'next/navigation'
 import {useState} from 'react'
+
+import {createFamilyAction} from '@/app/actions'
 import {
   Button,
   Dialog,
@@ -18,10 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui'
-import {Plus} from 'lucide-react'
-import {createFamilyAction} from '@/app/actions'
-import {Area, Group} from '@prisma/client'
-import {useRouter} from 'next/navigation'
 
 interface CreateFamilyDialogProps {
   areas: Area[]

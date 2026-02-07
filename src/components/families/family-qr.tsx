@@ -1,9 +1,10 @@
 'use client'
 
-import {QRCodeSVG} from 'qrcode.react'
-import {Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui'
 import {QrCode} from 'lucide-react'
+import {QRCodeSVG} from 'qrcode.react'
 import {useEffect, useState} from 'react'
+
+import {Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui'
 
 interface FamilyQRProps {
   familyId: number

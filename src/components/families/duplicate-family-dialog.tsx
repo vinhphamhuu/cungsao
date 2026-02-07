@@ -1,6 +1,11 @@
 'use client'
 
+import {Area, Group} from '@prisma/client'
+import {Copy, Plus, Trash2} from 'lucide-react'
+import {useRouter} from 'next/navigation'
 import {useState} from 'react'
+
+import {createFamilyWithMembersAction} from '@/app/actions'
 import {
   Button,
   Dialog,
@@ -24,27 +29,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui'
-import {Copy, Plus, Trash2} from 'lucide-react'
-import {createFamilyWithMembersAction} from '@/app/actions'
-import {Area, Gender, Group} from '@prisma/client'
-import {useRouter} from 'next/navigation'
+import {FamilyWithMembers} from '@/types'
 
 interface DuplicateFamilyDialogProps {
-  sourceFamily: {
-    id: number
-    name: string
-    areaId: number
-    groupId: number
-    members: {
-      id: number
-      fullName: string
-      birthYear: number
-      gender: Gender | string // Handle potential string from server action type mismatch if any
-    }[] // Simplified member type
-  }
   areas: Area[]
   groups: Group[]
   showText?: boolean
+  sourceFamily: Pick<FamilyWithMembers, 'id' | 'name' | 'areaId' | 'groupId' | 'members'>
 }
 
 export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: DuplicateFamilyDialogProps) {

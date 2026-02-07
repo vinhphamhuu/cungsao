@@ -1,8 +1,9 @@
 'use client'
 
-import {Input} from '@/components/ui'
-import {useRouter, usePathname, useSearchParams} from 'next/navigation'
+import {usePathname, useRouter, useSearchParams} from 'next/navigation'
 import {useDebouncedCallback} from 'use-debounce'
+
+import {Input} from '@/components/ui'
 
 export function FamilySearch() {
   const searchParams = useSearchParams()

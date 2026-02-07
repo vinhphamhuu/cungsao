@@ -1,8 +1,9 @@
 'use server'
 
 import {BAD_STARS, calculateSao, prisma, SAO_LIST} from '@/lib'
+import {DashboardStats} from '@/types'
 
-export async function getDashboardStats() {
+export async function getDashboardStats(): Promise<DashboardStats> {
   const familyCount = await prisma.family.count()
   const areaCount = await prisma.area.count()
 

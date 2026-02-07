@@ -1,10 +1,11 @@
-import {prisma} from '@/lib'
-import {notFound} from 'next/navigation'
-import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
-import Link from 'next/link'
 import {ArrowLeft} from 'lucide-react'
-import {AddMemberDialog, DuplicateFamilyDialog, FamilyQR, MemberList} from '@/components/families'
+import Link from 'next/link'
+import {notFound} from 'next/navigation'
+
 import {getAreas, getGroups} from '@/app/actions'
+import {AddMemberDialog, DuplicateFamilyDialog, FamilyQR, MemberList} from '@/components/families'
+import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
+import {prisma} from '@/lib'
 
 interface FamilyDetailPageProps {
   params: {

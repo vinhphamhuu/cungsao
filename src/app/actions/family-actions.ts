@@ -1,10 +1,12 @@
 'use server'
 
-import {prisma} from '@/lib'
-import {Prisma} from '@prisma/client'
+import {Family, Prisma} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
 
-export async function getFamilies(query?: string, areaId?: number, groupId?: number) {
+import {prisma} from '@/lib'
+import {ActionResponse, CreateFamilyDTO, CreateFamilyWithMembersDTO, FamilyWithMembers} from '@/types'
+
+export async function getFamilies(query?: string, areaId?: number, groupId?: number): Promise<FamilyWithMembers[]> {
   const where: Prisma.FamilyWhereInput = {}
 
   if (query) {
@@ -41,13 +43,7 @@ export async function getFamilies(query?: string, areaId?: number, groupId?: num
 // For now, let's implement structured actions accepting objects or FormData.
 // I'll prefer typed objects.
 
-export type CreateFamilyDTO = {
-  name: string
-  groupId: number
-  areaId: number
-}
-
-export async function createFamilyAction(data: CreateFamilyDTO) {
+export async function createFamilyAction(data: CreateFamilyDTO): Promise<ActionResponse<Family>> {
   try {
     const family = await prisma.family.create({
       data: {
@@ -63,7 +59,7 @@ export async function createFamilyAction(data: CreateFamilyDTO) {
   }
 }
 
-export async function updateFamilyAction(id: number, data: Partial<CreateFamilyDTO>) {
+export async function updateFamilyAction(id: number, data: Partial<CreateFamilyDTO>): Promise<ActionResponse<Family>> {
   try {
     const family = await prisma.family.update({
       where: {id},
@@ -78,18 +74,7 @@ export async function updateFamilyAction(id: number, data: Partial<CreateFamilyD
   }
 }
 
-export type CreateFamilyWithMembersDTO = {
-  name: string
-  groupId: number
-  areaId: number
-  members: {
-    fullName: string
-    birthYear: number
-    gender: 'MALE' | 'FEMALE'
-  }[]
-}
-
-export async function createFamilyWithMembersAction(data: CreateFamilyWithMembersDTO) {
+export async function createFamilyWithMembersAction(data: CreateFamilyWithMembersDTO): Promise<ActionResponse<Family>> {
   try {
     const result = await prisma.$transaction(async (tx) => {
       // 1. Create family
@@ -142,7 +127,7 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
   }
 }
 
-export async function deleteFamilyAction(id: number) {
+export async function deleteFamilyAction(id: number): Promise<ActionResponse> {
   try {
     // Delete members first? No, cascade usually handles it or we define logic.
     // Prisma cascade delete:

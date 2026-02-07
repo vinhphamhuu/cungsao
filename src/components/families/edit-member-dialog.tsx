@@ -1,6 +1,11 @@
 'use client'
 
+import {Gender, Member} from '@prisma/client'
+import {Pencil} from 'lucide-react'
+import {useRouter} from 'next/navigation'
 import {useState} from 'react'
+
+import {updateMemberAction} from '@/app/actions'
 import {
   Button,
   Dialog,
@@ -18,10 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui'
-import {updateMemberAction} from '@/app/actions'
-import {Gender, Member} from '@prisma/client'
-import {useRouter} from 'next/navigation'
-import {Pencil} from 'lucide-react'
 
 interface EditMemberDialogProps {
   member: Member

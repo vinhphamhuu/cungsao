@@ -1,6 +1,10 @@
 'use client'
 
+import {Area, Group} from '@prisma/client'
+import Link from 'next/link'
 import {useState} from 'react'
+
+import {SaoBadge} from '@/components/cung-sao'
 import {
   Input,
   Select,
@@ -16,29 +20,12 @@ import {
   TableRow,
 } from '@/components/ui'
 import {calculateSao, SAO_LIST} from '@/lib'
-import Link from 'next/link'
-import {SaoBadge} from '@/components/cung-sao'
-
-// Need types that include relations
-// We can infer or define manually.
-// For now assume similar structure as Prisma return.
-
-import {Area, Group, Member} from '@prisma/client'
-
-interface MemberWithFamily extends Member {
-  family: {
-    id: number
-    name: string
-    areaId: number
-    groupId: number
-    area?: Area
-  }
-}
+import {MemberWithFamily} from '@/types'
 
 interface CungSaoTableProps {
-  initMembers: MemberWithFamily[]
   areas: Area[]
   groups: Group[]
+  initMembers: MemberWithFamily[]
 }
 
 export function CungSaoTable({initMembers, areas, groups}: CungSaoTableProps) {

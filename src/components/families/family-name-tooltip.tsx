@@ -1,12 +1,13 @@
 'use client'
 
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui'
 import Link from 'next/link'
 
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui'
+
 interface MemberInfo {
-  id: number
-  fullName: string
   birthYear: number
+  fullName: string
+  id: number
 }
 
 interface FamilyNameTooltipProps {

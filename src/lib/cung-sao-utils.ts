@@ -1,15 +1,6 @@
 import {Gender} from '@prisma/client'
 
-export interface StarInfo {
-  id: number
-  name: string
-  color: string
-  icon: string
-  type: string
-  note: string
-  element: string
-  description: string
-}
+import {StarInfo} from '@/types'
 
 export const STAR_DATA: StarInfo[] = [
   {

@@ -1,8 +1,9 @@
-import {getDashboardStats} from '@/app/actions'
-import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
+import {AlertTriangle, MapPin, User, Users} from 'lucide-react'
 import Link from 'next/link'
-import {Users, User, MapPin, AlertTriangle} from 'lucide-react'
+
+import {getDashboardStats} from '@/app/actions'
 import {SaoChart} from '@/components/dashboard/sao-chart'
+import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
 
 export default async function Home() {
   const stats = await getDashboardStats()

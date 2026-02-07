@@ -1,13 +1,14 @@
 'use client'
 
 import ReactECharts from 'echarts-for-react'
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui'
 import {useTheme} from 'next-themes'
 
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui'
+
 interface SaoChartProps {
+  color: string
   data: {name: string; value: number}[]
   title: string
-  color: string
 }
 
 export function SaoChart({data, title, color}: SaoChartProps) {
