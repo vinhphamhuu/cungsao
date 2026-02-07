@@ -1,39 +1,120 @@
 import { Gender } from "@prisma/client"
 
-export const SAO_LIST = [
-  "La Hầu",    // 0
-  "Thổ Tú",    // 1
-  "Thủy Diệu", // 2
-  "Thái Bạch", // 3
-  "Thái Dương",// 4
-  "Vân Hán",   // 5
-  "Kế Đô",     // 6
-  "Thái Âm",   // 7
-  "Mộc Đức",   // 8
-];
-
-// La Hầu, Kế Đô, Thái Bạch are generally considered bad
-// La Hầu, Kế Đô, Thái Bạch are generally considered bad
-export const BAD_STARS = ["La Hầu", "Kế Đô", "Thái Bạch"];
-
-export function getSaoColor(sao: string): string {
-  if (BAD_STARS.includes(sao)) return "destructive"; // Red
-  if (["Thái Dương", "Mộc Đức", "Thái Âm"].includes(sao)) return "default"; // Good - Black/Primary
-  if (["Thái Dương", "Mộc Đức", "Thái Âm"].includes(sao)) return "default"; // Good - Black/Primary
-  return "secondary"; // Neutral - Gray
+export interface StarInfo {
+  id: number;
+  name: string;
+  color: string;
+  icon: string;
+  type: string;
+  note: string;
+  element: string;
+  description: string;
 }
 
-export const SAO_DESCRIPTIONS: Record<string, string> = {
-  "La Hầu": "Sao La Hầu là sao hung, chủ về khẩu thiệt, thị phi, tai mắt, máu huyết. Nam giới kỵ nhất tháng Giêng và tháng Bảy.",
-  "Kế Đô": "Sao Kế Đô là sao hung, chủ về ám muội, thị phi, sầu muộn, gia đạo bất an. Nữ giới kỵ nhất tháng Ba và tháng Chín.",
-  "Thái Bạch": "Sao Thái Bạch là sao hung, chủ về hao tốn tiền của, ốm đau, công việc trắc trở. Kỵ nhất tháng Năm.",
-  "Thái Dương": "Sao Thái Dương là sao tốt (cát tinh), chủ về an khang thịnh vượng, công danh hiển đạt. Nam giới gặp sao này rất tốt.",
-  "Thái Âm": "Sao Thái Âm là sao tốt (cát tinh), chủ về danh lợi, hỷ sự. Nữ giới gặp sao này rất tốt, nhất là tháng Chín.",
-  "Mộc Đức": "Sao Mộc Đức là sao tốt (cát tinh), chủ về may mắn, bình an, hỷ sự. Tốt cho cả nam và nữ.",
-  "Vân Hán": "Sao Vân Hán là sao trung tính, chủ về thủ cựu bình an, đề phòng khẩu thiệt, kiện tụng. Kỵ tháng Tư và tháng Tám.",
-  "Thổ Tú": "Sao Thổ Tú là sao trung tính, chủ về tiểu nhân, xuất hành không thuận, gia đạo bất hòa. Kỵ tháng Tư và tháng Tám.",
-  "Thủy Diệu": "Sao Thủy Diệu là sao trung tính (có kiết có hung), chủ về tài lộc nhưng cũng cần đề phòng thị phi, đường sông nước. Kỵ tháng Tư và tháng Tám.",
-};
+export const STAR_DATA: StarInfo[] = [
+  {
+    id: 0,
+    name: "La Hầu",
+    color: "#FF0000",
+    icon: "👹",
+    type: "Hung tinh",
+    note: "Xấu cho Nam (thị phi, cửa quan)",
+    element: "Kim",
+    description: "Sao La Hầu là sao hung, chủ về khẩu thiệt, thị phi, tai mắt, máu huyết. Nam giới kỵ nhất tháng Giêng và tháng Bảy."
+  },
+  {
+    id: 1,
+    name: "Thổ Tú",
+    color: "#FFA500",
+    icon: "🏔️",
+    type: "Trung tinh",
+    note: "Gia đạo bất an, tiểu nhân",
+    element: "Thổ",
+    description: "Sao Thổ Tú là sao trung tính, chủ về tiểu nhân, xuất hành không thuận, gia đạo bất hòa. Kỵ tháng Tư và tháng Tám."
+  },
+  {
+    id: 2,
+    name: "Thủy Diệu",
+    color: "#00BFFF",
+    icon: "🌊",
+    type: "Kiết tinh (nhưng kỵ tháng 4, 8)",
+    note: "Có tài lộc, kỵ sông nước",
+    element: "Thủy",
+    description: "Sao Thủy Diệu là sao trung tính (có kiết có hung), chủ về tài lộc nhưng cũng cần đề phòng thị phi, đường sông nước. Kỵ tháng Tư và tháng Tám."
+  },
+  {
+    id: 3,
+    name: "Thái Bạch",
+    color: "#FF4500",
+    icon: "💸",
+    type: "Hung tinh",
+    note: "Hao tốn tiền của (sạch cửa nhà)",
+    element: "Kim",
+    description: "Sao Thái Bạch là sao hung, chủ về hao tốn tiền của, ốm đau, công việc trắc trở. Kỵ nhất tháng Năm."
+  },
+  {
+    id: 4,
+    name: "Thái Dương",
+    color: "#228B22",
+    icon: "☀️",
+    type: "Kiết tinh",
+    note: "Cực tốt cho Nam (danh lộc)",
+    element: "Hỏa",
+    description: "Sao Thái Dương là sao tốt (cát tinh), chủ về an khang thịnh vượng, công danh hiển đạt. Nam giới gặp sao này rất tốt."
+  },
+  {
+    id: 5,
+    name: "Vân Hán",
+    color: "#FFD700",
+    icon: "🏹",
+    type: "Trung tinh",
+    note: "Phòng thương tật, khẩu thiệt",
+    element: "Hỏa",
+    description: "Sao Vân Hán là sao trung tính, chủ về thủ cựu bình an, đề phòng khẩu thiệt, kiện tụng. Kỵ tháng Tư và tháng Tám."
+  },
+  {
+    id: 6,
+    name: "Kế Đô",
+    color: "#B22222",
+    icon: "🌪️",
+    type: "Hung tinh",
+    note: "Xấu cho Nữ (buồn phiền, tai nạn)",
+    element: "Thổ",
+    description: "Sao Kế Đô là sao hung, chủ về ám muội, thị phi, sầu muộn, gia đạo bất an. Nữ giới kỵ nhất tháng Ba và tháng Chín."
+  },
+  {
+    id: 7,
+    name: "Thái Âm",
+    color: "#9370DB",
+    icon: "🌙",
+    type: "Kiết tinh",
+    note: "Cực tốt cho Nữ (hỷ sự, tiền bạc)",
+    element: "Thủy",
+    description: "Sao Thái Âm là sao tốt (cát tinh), chủ về danh lợi, hỷ sự. Nữ giới gặp sao này rất tốt, nhất là tháng Chín."
+  },
+  {
+    id: 8,
+    name: "Mộc Đức",
+    color: "#32CD32",
+    icon: "🍀",
+    type: "Kiết tinh",
+    note: "Bình an, quý nhân phù trợ",
+    element: "Mộc",
+    description: "Sao Mộc Đức là sao tốt (cát tinh), chủ về may mắn, bình an, hỷ sự. Tốt cho cả nam và nữ."
+  }
+];
+
+export const SAO_LIST = STAR_DATA.map(s => s.name);
+export const BAD_STARS = STAR_DATA.filter(s => s.type === "Hung tinh").map(s => s.name);
+
+export function getStarInfo(name: string): StarInfo | undefined {
+  return STAR_DATA.find(s => s.name === name);
+}
+
+export function getSaoColor(sao: string): string {
+  const info = getStarInfo(sao);
+  return info?.color || "#808080";
+}
 
 // Reference ages (starts from 10)
 const MALE_STARTING_SAO_INDEX = 0; // 10 tuổi -> La Hầu (index 0)
@@ -134,6 +215,13 @@ export function calculateSao(birthYear: number, gender: Gender, currentYear: num
   } else {
     return AGE_REMAINDER_MAP_FEMALE[index];
   }
+}
+
+export function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 export function calculateHan(birthYear: number, gender: Gender, currentYear: number = new Date().getFullYear()): string {
