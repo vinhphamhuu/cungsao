@@ -1,13 +1,23 @@
 'use client'
 
 import { useState } from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { calculateSao, SAO_LIST, getSaoColor } from "@/lib/cung-sao-utils"
-import { Badge } from "@/components/ui/badge"
+import {
+    Input,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
+} from "@/components/ui"
+import { calculateSao, SAO_LIST } from "@/lib"
 import Link from "next/link"
-import { SaoBadge } from "./sao-badge"
+import { SaoBadge } from "@/components/cung-sao"
 
 // Need types that include relations
 // We can infer or define manually.

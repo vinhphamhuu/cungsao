@@ -1,7 +1,6 @@
-import { getDashboardStats } from "@/app/actions/stats-actions"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getDashboardStats } from "@/app/actions"
+import { Button, Card, CardContent, CardHeader, CardTitle } from "@/components/ui"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Users, User, MapPin, AlertTriangle } from "lucide-react"
 import { SaoChart } from "@/components/dashboard/sao-chart"
 

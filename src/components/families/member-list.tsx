@@ -1,15 +1,21 @@
 'use client'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
+import {
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
+} from "@/components/ui"
 import { Member } from "@prisma/client"
-import { Badge } from "@/components/ui/badge"
-import { getSaoColor, calculateSao } from "@/lib/cung-sao-utils"
-import { deleteMemberAction, updateMemberAction } from "@/app/actions/member-actions"
-import { Trash2, UserCog } from "lucide-react"
+import { calculateSao } from "@/lib"
+import { deleteMemberAction } from "@/app/actions"
+import { Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { EditMemberDialog } from "./edit-member-dialog"
-import { SaoBadge } from "@/components/cung-sao/sao-badge"
+import { SaoBadge } from "@/components/cung-sao"
 
 // We can move calculateSao to client or server. Since it's pure util, client is fine.
 

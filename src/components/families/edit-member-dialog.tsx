@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import {
+    Button,
     Dialog,
     DialogContent,
     DialogDescription,
@@ -10,17 +10,15 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
+    Input,
+    Label,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { updateMemberAction } from "@/app/actions/member-actions"
+    SelectValue
+} from "@/components/ui"
+import { updateMemberAction } from "@/app/actions"
 import { Gender, Member } from "@prisma/client"
 import { useRouter } from "next/navigation"
 import { Pencil } from "lucide-react"

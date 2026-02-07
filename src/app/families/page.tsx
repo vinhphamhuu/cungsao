@@ -1,21 +1,21 @@
-import { getFamilies } from "@/app/actions/family-actions"
+import { getAreas, getFamilies, getGroups } from "@/app/actions"
 import {
+    Button,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
+    TableRow
+} from "@/components/ui"
 import Link from "next/link"
-import { Plus } from "lucide-react"
-import { CreateFamilyDialog } from "@/components/families/create-family-dialog"
-import { getAreas, getGroups } from "@/app/actions/lookup-actions"
 
-import { FamilyFilters } from "@/components/families/family-filters"
-import { FamilyNameTooltip } from "@/components/families/family-name-tooltip"
-import { DuplicateFamilyDialog } from "@/components/families/duplicate-family-dialog"
+import {
+    CreateFamilyDialog,
+    FamilyFilters,
+    FamilyNameTooltip,
+    DuplicateFamilyDialog
+} from "@/components/families"
 
 export default async function FamiliesPage(props: {
     searchParams?: Promise<{

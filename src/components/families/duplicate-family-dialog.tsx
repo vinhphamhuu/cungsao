@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import {
+    Button,
     Dialog,
     DialogContent,
     DialogDescription,
@@ -10,22 +10,25 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
+    Input,
+    Label,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
+} from "@/components/ui"
 import { Copy, Plus, Trash2 } from "lucide-react"
-import { createFamilyWithMembersAction } from "@/app/actions/family-actions"
-import { Area, Group, Gender } from "@prisma/client"
+import { createFamilyWithMembersAction } from "@/app/actions"
+import { Area, Gender, Group } from "@prisma/client"
 import { useRouter } from "next/navigation"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+
 
 interface DuplicateFamilyDialogProps {
     sourceFamily: {

@@ -1,12 +1,18 @@
 'use client'
 
-import { Input } from "@/components/ui/input"
-import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import {
+    Button,
+    Input,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Area, Group } from "@prisma/client"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react"
 import { X } from "lucide-react"
 
 interface FamilyFiltersProps {

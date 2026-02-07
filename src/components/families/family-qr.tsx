@@ -1,8 +1,7 @@
 'use client'
 
 import { QRCodeSVG } from 'qrcode.react'
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui"
 import { QrCode } from "lucide-react"
 import { useEffect, useState } from 'react'
 

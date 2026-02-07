@@ -1,8 +1,13 @@
 'use client'
 
-import { Badge } from "@/components/ui/badge"
-import { getStarInfo, hexToRgba } from "@/lib/cung-sao-utils"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+    Badge,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger
+} from "@/components/ui"
+import { getStarInfo, hexToRgba } from "@/lib"
 
 interface SaoBadgeProps {
     sao: string

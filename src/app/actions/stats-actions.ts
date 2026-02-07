@@ -1,7 +1,6 @@
 'use server'
 
-import { prisma } from '@/lib/db'
-import { calculateSao, BAD_STARS, SAO_LIST } from '@/lib/cung-sao-utils'
+import { BAD_STARS, calculateSao, prisma, SAO_LIST } from '@/lib'
 
 export async function getDashboardStats() {
     const familyCount = await prisma.family.count()

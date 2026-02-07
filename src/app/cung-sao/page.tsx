@@ -1,6 +1,5 @@
-import { getAllMembers } from "@/app/actions/member-actions"
-import { getAreas, getGroups } from "@/app/actions/lookup-actions"
-import { CungSaoTable } from "@/components/cung-sao/cung-sao-table"
+import { getAllMembers, getAreas, getGroups } from "@/app/actions"
+import { CungSaoTable } from "@/components/cung-sao"
 
 export default async function CungSaoPage() {
     const members = await getAllMembers()

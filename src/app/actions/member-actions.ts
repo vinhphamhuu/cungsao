@@ -1,6 +1,6 @@
 'use server'
 
-import { prisma } from '@/lib/db'
+import { prisma } from '@/lib'
 import { revalidatePath } from 'next/cache'
 import { Gender } from '@prisma/client'
 

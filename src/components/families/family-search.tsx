@@ -1,6 +1,6 @@
 'use client'
 
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { useDebouncedCallback } from "use-debounce"
 

@@ -5,7 +5,7 @@ import {
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui"
 import Link from "next/link"
 
 interface MemberInfo {

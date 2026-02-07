@@ -1,14 +1,15 @@
-import { prisma } from "@/lib/db"
+import { prisma } from "@/lib"
 import { notFound } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Button, Card, CardContent, CardHeader, CardTitle } from "@/components/ui"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { MemberList } from "@/components/families/member-list"
-import { AddMemberDialog } from "@/components/families/add-member-dialog"
-import { FamilyQR } from "@/components/families/family-qr"
-import { DuplicateFamilyDialog } from "@/components/families/duplicate-family-dialog"
-import { getAreas, getGroups } from "@/app/actions/lookup-actions"
+import {
+    AddMemberDialog,
+    DuplicateFamilyDialog,
+    FamilyQR,
+    MemberList
+} from "@/components/families"
+import { getAreas, getGroups } from "@/app/actions"
 
 interface FamilyDetailPageProps {
     params: {

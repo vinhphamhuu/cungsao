@@ -1,7 +1,7 @@
 'use client'
 
 import ReactECharts from 'echarts-for-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui"
 import { useTheme } from "next-themes"
 
 interface SaoChartProps {
