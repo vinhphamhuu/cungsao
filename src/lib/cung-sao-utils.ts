@@ -1,4 +1,4 @@
-import { Gender } from '@prisma/client'
+import {Gender} from '@prisma/client'
 
 export interface StarInfo {
   id: number
@@ -53,8 +53,7 @@ export const STAR_DATA: StarInfo[] = [
     type: 'Hung tinh',
     note: 'Hao tốn tiền của (sạch cửa nhà)',
     element: 'Kim',
-    description:
-      'Sao Thái Bạch là sao hung, chủ về hao tốn tiền của, ốm đau, công việc trắc trở. Kỵ nhất tháng Năm.',
+    description: 'Sao Thái Bạch là sao hung, chủ về hao tốn tiền của, ốm đau, công việc trắc trở. Kỵ nhất tháng Năm.',
   },
   {
     id: 4,
@@ -108,8 +107,7 @@ export const STAR_DATA: StarInfo[] = [
     type: 'Kiết tinh',
     note: 'Bình an, quý nhân phù trợ',
     element: 'Mộc',
-    description:
-      'Sao Mộc Đức là sao tốt (cát tinh), chủ về may mắn, bình an, hỷ sự. Tốt cho cả nam và nữ.',
+    description: 'Sao Mộc Đức là sao tốt (cát tinh), chủ về may mắn, bình an, hỷ sự. Tốt cho cả nam và nữ.',
   },
 ]
 

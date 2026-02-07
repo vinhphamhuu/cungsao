@@ -1,21 +1,8 @@
-import { getAreas, getFamilies, getGroups } from '@/app/actions'
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui'
+import {getAreas, getFamilies, getGroups} from '@/app/actions'
+import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
 import Link from 'next/link'
 
-import {
-  CreateFamilyDialog,
-  FamilyFilters,
-  FamilyNameTooltip,
-  DuplicateFamilyDialog,
-} from '@/components/families'
+import {CreateFamilyDialog, FamilyFilters, FamilyNameTooltip, DuplicateFamilyDialog} from '@/components/families'
 
 export default async function FamiliesPage(props: {
   searchParams?: Promise<{
@@ -70,11 +57,7 @@ export default async function FamiliesPage(props: {
               families.map((family) => (
                 <TableRow key={family.id}>
                   <TableCell className="font-medium">
-                    <FamilyNameTooltip
-                      familyId={family.id}
-                      familyName={family.name}
-                      members={family.members}
-                    />
+                    <FamilyNameTooltip familyId={family.id} familyName={family.name} members={family.members} />
                   </TableCell>
                   <TableCell>{family.representative?.fullName || 'Chưa có'}</TableCell>
                   <TableCell>{family.area?.name}</TableCell>

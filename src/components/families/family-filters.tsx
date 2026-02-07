@@ -1,29 +1,21 @@
 'use client'
 
-import {
-  Button,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useDebouncedCallback } from 'use-debounce'
-import { Area, Group } from '@prisma/client'
-import { useState } from 'react'
-import { X } from 'lucide-react'
+import {Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui'
+import {usePathname, useRouter, useSearchParams} from 'next/navigation'
+import {useDebouncedCallback} from 'use-debounce'
+import {Area, Group} from '@prisma/client'
+import {useState} from 'react'
+import {X} from 'lucide-react'
 
 interface FamilyFiltersProps {
   areas: Area[]
   groups: Group[]
 }
 
-export function FamilyFilters({ areas, groups }: FamilyFiltersProps) {
+export function FamilyFilters({areas, groups}: FamilyFiltersProps) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
-  const { replace } = useRouter()
+  const {replace} = useRouter()
 
   // Local state for immediate feedback
   const [areaId, setAreaId] = useState(searchParams.get('areaId') || '')

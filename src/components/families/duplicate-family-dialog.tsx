@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import {useState} from 'react'
 import {
   Button,
   Dialog,
@@ -24,10 +24,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui'
-import { Copy, Plus, Trash2 } from 'lucide-react'
-import { createFamilyWithMembersAction } from '@/app/actions'
-import { Area, Gender, Group } from '@prisma/client'
-import { useRouter } from 'next/navigation'
+import {Copy, Plus, Trash2} from 'lucide-react'
+import {createFamilyWithMembersAction} from '@/app/actions'
+import {Area, Gender, Group} from '@prisma/client'
+import {useRouter} from 'next/navigation'
 
 interface DuplicateFamilyDialogProps {
   sourceFamily: {
@@ -47,12 +47,7 @@ interface DuplicateFamilyDialogProps {
   showText?: boolean
 }
 
-export function DuplicateFamilyDialog({
-  sourceFamily,
-  areas,
-  groups,
-  showText,
-}: DuplicateFamilyDialogProps) {
+export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: DuplicateFamilyDialogProps) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -72,10 +67,7 @@ export function DuplicateFamilyDialog({
   )
 
   const handleAddMember = () => {
-    setMembers([
-      ...members,
-      { fullName: 'Thành viên mới', birthYear: new Date().getFullYear(), gender: 'MALE' },
-    ])
+    setMembers([...members, {fullName: 'Thành viên mới', birthYear: new Date().getFullYear(), gender: 'MALE'}])
   }
 
   const handleRemoveMember = (index: number) => {
@@ -90,7 +82,7 @@ export function DuplicateFamilyDialog({
     value: (typeof members)[0][K],
   ) => {
     const newMembers = [...members]
-    newMembers[index] = { ...newMembers[index], [field]: value }
+    newMembers[index] = {...newMembers[index], [field]: value}
     setMembers(newMembers)
   }
 
@@ -122,12 +114,7 @@ export function DuplicateFamilyDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={showText ? 'outline' : 'ghost'}
-          size="sm"
-          title="Nhân bản"
-          className={showText ? 'gap-2' : ''}
-        >
+        <Button variant={showText ? 'outline' : 'ghost'} size="sm" title="Nhân bản" className={showText ? 'gap-2' : ''}>
           <Copy className="h-4 w-4" />
           {showText && <span>Nhân bản</span>}
         </Button>
@@ -136,8 +123,7 @@ export function DuplicateFamilyDialog({
         <DialogHeader>
           <DialogTitle>Nhân bản Gia Đình</DialogTitle>
           <DialogDescription>
-            Tạo bản sao từ gia đình <strong>{sourceFamily.name}</strong>. Bạn có thể chỉnh sửa thông
-            tin trước khi tạo.
+            Tạo bản sao từ gia đình <strong>{sourceFamily.name}</strong>. Bạn có thể chỉnh sửa thông tin trước khi tạo.
           </DialogDescription>
         </DialogHeader>
 
@@ -222,18 +208,14 @@ export function DuplicateFamilyDialog({
                         <Input
                           type="number"
                           value={member.birthYear}
-                          onChange={(e) =>
-                            handleMemberChange(idx, 'birthYear', parseInt(e.target.value))
-                          }
+                          onChange={(e) => handleMemberChange(idx, 'birthYear', parseInt(e.target.value))}
                           className="h-8"
                         />
                       </TableCell>
                       <TableCell>
                         <Select
                           value={member.gender}
-                          onValueChange={(val) =>
-                            handleMemberChange(idx, 'gender', val as 'MALE' | 'FEMALE')
-                          }
+                          onValueChange={(val) => handleMemberChange(idx, 'gender', val as 'MALE' | 'FEMALE')}
                         >
                           <SelectTrigger className="h-8">
                             <SelectValue />

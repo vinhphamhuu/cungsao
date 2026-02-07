@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import {useState} from 'react'
 import {
   Input,
   Select,
@@ -15,15 +15,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui'
-import { calculateSao, SAO_LIST } from '@/lib'
+import {calculateSao, SAO_LIST} from '@/lib'
 import Link from 'next/link'
-import { SaoBadge } from '@/components/cung-sao'
+import {SaoBadge} from '@/components/cung-sao'
 
 // Need types that include relations
 // We can infer or define manually.
 // For now assume similar structure as Prisma return.
 
-import { Area, Group, Member } from '@prisma/client'
+import {Area, Group, Member} from '@prisma/client'
 
 interface MemberWithFamily extends Member {
   family: {
@@ -41,7 +41,7 @@ interface CungSaoTableProps {
   groups: Group[]
 }
 
-export function CungSaoTable({ initMembers, areas, groups }: CungSaoTableProps) {
+export function CungSaoTable({initMembers, areas, groups}: CungSaoTableProps) {
   const [filterName, setFilterName] = useState('')
   const [filterSao, setFilterSao] = useState('ALL')
   const [filterArea, setFilterArea] = useState('ALL')
@@ -51,7 +51,7 @@ export function CungSaoTable({ initMembers, areas, groups }: CungSaoTableProps) 
   // Process data
   const data = initMembers.map((m) => {
     const sao = calculateSao(m.birthYear, m.gender, currentYear)
-    return { ...m, sao, age: currentYear - m.birthYear + 1 }
+    return {...m, sao, age: currentYear - m.birthYear + 1}
   })
 
   const filteredData = data.filter((item) => {
@@ -115,9 +115,7 @@ export function CungSaoTable({ initMembers, areas, groups }: CungSaoTableProps) 
       </div>
 
       <div className="glass-card p-4">
-        <div className="text-sm text-muted-foreground mb-4">
-          Tìm thấy {filteredData.length} kết quả.
-        </div>
+        <div className="text-sm text-muted-foreground mb-4">Tìm thấy {filteredData.length} kết quả.</div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -141,10 +139,7 @@ export function CungSaoTable({ initMembers, areas, groups }: CungSaoTableProps) 
                   <SaoBadge sao={item.sao} />
                 </TableCell>
                 <TableCell>
-                  <Link
-                    href={`/families/${item.family.id}`}
-                    className="hover:underline text-blue-500"
-                  >
+                  <Link href={`/families/${item.family.id}`} className="hover:underline text-blue-500">
                     {item.family.name}
                   </Link>
                 </TableCell>

@@ -1,21 +1,13 @@
 'use client'
 
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui'
-import { Member } from '@prisma/client'
-import { calculateSao } from '@/lib'
-import { deleteMemberAction } from '@/app/actions'
-import { Trash2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { EditMemberDialog } from './edit-member-dialog'
-import { SaoBadge } from '@/components/cung-sao'
+import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
+import {Member} from '@prisma/client'
+import {calculateSao} from '@/lib'
+import {deleteMemberAction} from '@/app/actions'
+import {Trash2} from 'lucide-react'
+import {useRouter} from 'next/navigation'
+import {EditMemberDialog} from './edit-member-dialog'
+import {SaoBadge} from '@/components/cung-sao'
 
 // We can move calculateSao to client or server. Since it's pure util, client is fine.
 
@@ -23,7 +15,7 @@ interface MemberListProps {
   members: Member[]
 }
 
-export function MemberList({ members }: MemberListProps) {
+export function MemberList({members}: MemberListProps) {
   const currentYear = new Date().getFullYear()
   const router = useRouter()
 

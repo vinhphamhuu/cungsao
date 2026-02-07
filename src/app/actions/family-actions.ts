@@ -1,16 +1,16 @@
 'use server'
 
-import { prisma } from '@/lib'
-import { Prisma } from '@prisma/client'
-import { revalidatePath } from 'next/cache'
+import {prisma} from '@/lib'
+import {Prisma} from '@prisma/client'
+import {revalidatePath} from 'next/cache'
 
 export async function getFamilies(query?: string, areaId?: number, groupId?: number) {
   const where: Prisma.FamilyWhereInput = {}
 
   if (query) {
     where.OR = [
-      { name: { contains: query, mode: 'insensitive' as const } },
-      { representative: { fullName: { contains: query, mode: 'insensitive' as const } } },
+      {name: {contains: query, mode: 'insensitive' as const}},
+      {representative: {fullName: {contains: query, mode: 'insensitive' as const}}},
     ]
   }
 
@@ -57,24 +57,24 @@ export async function createFamilyAction(data: CreateFamilyDTO) {
       },
     })
     revalidatePath('/')
-    return { success: true, data: family }
+    return {success: true, data: family}
   } catch {
-    return { success: false, error: 'Failed to create family' }
+    return {success: false, error: 'Failed to create family'}
   }
 }
 
 export async function updateFamilyAction(id: number, data: Partial<CreateFamilyDTO>) {
   try {
     const family = await prisma.family.update({
-      where: { id },
+      where: {id},
       data: {
         ...data,
       },
     })
     revalidatePath('/')
-    return { success: true, data: family }
+    return {success: true, data: family}
   } catch {
-    return { success: false, error: 'Failed to update family' }
+    return {success: false, error: 'Failed to update family'}
   }
 }
 
@@ -124,7 +124,7 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
 
         // Update family with the first member as representative
         return await tx.family.update({
-          where: { id: family.id },
+          where: {id: family.id},
           data: {
             representativeId: firstMember.id,
           },
@@ -135,10 +135,10 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
     })
 
     revalidatePath('/')
-    return { success: true, data: result }
+    return {success: true, data: result}
   } catch (error) {
     console.error('Create family with members error:', error)
-    return { success: false, error: 'Failed to create family with members' }
+    return {success: false, error: 'Failed to create family with members'}
   }
 }
 
@@ -147,15 +147,15 @@ export async function deleteFamilyAction(id: number) {
     // Delete members first? No, cascade usually handles it or we define logic.
     // Prisma cascade delete:
     await prisma.member.deleteMany({
-      where: { familyId: id },
+      where: {familyId: id},
     })
 
     await prisma.family.delete({
-      where: { id },
+      where: {id},
     })
     revalidatePath('/')
-    return { success: true }
+    return {success: true}
   } catch {
-    return { success: false, error: 'Failed to delete family' }
+    return {success: false, error: 'Failed to delete family'}
   }
 }

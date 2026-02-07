@@ -1,23 +1,16 @@
 'use client'
 
-import { QRCodeSVG } from 'qrcode.react'
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui'
-import { QrCode } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import {QRCodeSVG} from 'qrcode.react'
+import {Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui'
+import {QrCode} from 'lucide-react'
+import {useEffect, useState} from 'react'
 
 interface FamilyQRProps {
   familyId: number
   familyName: string
 }
 
-export function FamilyQR({ familyId, familyName }: FamilyQRProps) {
+export function FamilyQR({familyId, familyName}: FamilyQRProps) {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -46,9 +39,7 @@ export function FamilyQR({ familyId, familyName }: FamilyQRProps) {
             <QRCodeSVG value={url} size={200} />
           </div>
           <p className="text-sm text-center text-muted-foreground break-all">{url}</p>
-          <p className="text-sm text-center text-muted-foreground">
-            Quét mã để xem danh sách thành viên
-          </p>
+          <p className="text-sm text-center text-muted-foreground">Quét mã để xem danh sách thành viên</p>
         </div>
       </DialogContent>
     </Dialog>
