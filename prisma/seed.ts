@@ -41,14 +41,17 @@ async function main() {
       id: createId('grp'),
       name: 'Ấp 1',
       description: 'Khu vực chợ',
+      areaId: area1.id,
     },
   })
 
+  // Group 2 for Area 2
   const group2 = await prisma.group.create({
     data: {
       id: createId('grp'),
       name: 'Phường Đa Kao',
       description: 'Khu dân cư',
+      areaId: area2.id,
     },
   })
 

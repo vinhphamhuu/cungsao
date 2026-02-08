@@ -57,6 +57,7 @@ async function main() {
             id: createId('grp'),
             name: groupName,
             description: `Imported from folder ${groupName}`,
+            areaId: area.id,
           },
         })
       }

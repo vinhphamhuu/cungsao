@@ -1,6 +1,6 @@
 'use client'
 
-import {Group} from '@prisma/client'
+import {Area, Group} from '@prisma/client'
 import {Pencil, Plus, Trash2} from 'lucide-react'
 import {useState} from 'react'
 
@@ -20,6 +20,11 @@ import {
   DialogTitle,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -29,11 +34,16 @@ import {
   Textarea,
 } from '@/components/ui'
 
-interface GroupManagementProps {
-  groups: Group[]
+interface GroupWithArea extends Group {
+  area?: Area | null
 }
 
-export function GroupManagement({groups}: GroupManagementProps) {
+interface GroupManagementProps {
+  areas: Area[]
+  groups: GroupWithArea[]
+}
+
+export function GroupManagement({groups, areas}: GroupManagementProps) {
   const [open, setOpen] = useState(false)
   const [editingGroup, setEditingGroup] = useState<Group | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -41,6 +51,7 @@ export function GroupManagement({groups}: GroupManagementProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    areaId: '',
   })
 
   const handleOpenDialog = (group?: Group) => {
@@ -49,12 +60,14 @@ export function GroupManagement({groups}: GroupManagementProps) {
       setFormData({
         name: group.name,
         description: group.description || '',
+        areaId: group.areaId || '',
       })
     } else {
       setEditingGroup(null)
       setFormData({
         name: '',
         description: '',
+        areaId: areas.length > 0 ? areas[0].id : '',
       })
     }
     setOpen(true)
@@ -72,7 +85,7 @@ export function GroupManagement({groups}: GroupManagementProps) {
 
     if (result.success) {
       setOpen(false)
-      setFormData({name: '', description: ''})
+      setFormData({name: '', description: '', areaId: areas.length > 0 ? areas[0].id : ''})
     } else {
       alert(result.error || 'Có lỗi xảy ra')
     }
@@ -106,6 +119,7 @@ export function GroupManagement({groups}: GroupManagementProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Tên</TableHead>
+              <TableHead>Khu vực</TableHead>
               <TableHead>Mô tả</TableHead>
               <TableHead className="text-right">Thao tác</TableHead>
             </TableRow>
@@ -114,6 +128,7 @@ export function GroupManagement({groups}: GroupManagementProps) {
             {groups.map((group) => (
               <TableRow key={group.id}>
                 <TableCell className="font-medium">{group.name}</TableCell>
+                <TableCell>{group.area?.name || '-'}</TableCell>
                 <TableCell className="max-w-md truncate">{group.description || '-'}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
@@ -141,6 +156,26 @@ export function GroupManagement({groups}: GroupManagementProps) {
               </DialogHeader>
 
               <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="area">Khu vực</Label>
+                  <Select
+                    value={formData.areaId}
+                    onValueChange={(value) => setFormData({...formData, areaId: value})}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn khu vực" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {areas.map((area) => (
+                        <SelectItem key={area.id} value={area.id.toString()}>
+                          {area.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <div className="grid gap-2">
                   <Label htmlFor="name">Tên nhóm</Label>
                   <Input

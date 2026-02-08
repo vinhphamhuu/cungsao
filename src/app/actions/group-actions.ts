@@ -6,6 +6,7 @@ import {createId, prisma} from '@/lib'
 import {ActionResult} from '@/types'
 
 export async function createGroupAction(data: {
+  areaId?: string
   description?: string
   name: string
 }): Promise<ActionResult<{id: string}>> {
@@ -15,6 +16,7 @@ export async function createGroupAction(data: {
         id: createId('grp'),
         name: data.name,
         description: data.description,
+        areaId: data.areaId,
       },
     })
 
@@ -27,6 +29,7 @@ export async function createGroupAction(data: {
 }
 
 export async function updateGroupAction(data: {
+  areaId?: string
   description?: string
   id: string
   name: string
@@ -37,6 +40,7 @@ export async function updateGroupAction(data: {
       data: {
         name: data.name,
         description: data.description,
+        areaId: data.areaId,
       },
     })
 

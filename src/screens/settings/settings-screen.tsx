@@ -11,6 +11,7 @@ export default async function SettingsScreen() {
     }),
     prisma.group.findMany({
       orderBy: {name: 'asc'},
+      include: {area: true},
     }),
   ])
 
@@ -26,7 +27,7 @@ export default async function SettingsScreen() {
 
       <div className="grid gap-6">
         <AreaManagement areas={areas} />
-        <GroupManagement groups={groups} />
+        <GroupManagement groups={groups} areas={areas} />
       </div>
     </div>
   )
