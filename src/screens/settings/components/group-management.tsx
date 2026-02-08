@@ -78,7 +78,7 @@ export function GroupManagement({groups}: GroupManagementProps) {
     }
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa nhóm này?')) return
 
     const result = await deleteGroupAction(id)

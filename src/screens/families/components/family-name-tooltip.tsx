@@ -7,11 +7,11 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/compon
 interface MemberInfo {
   birthYear: number
   fullName: string
-  id: number
+  id: string
 }
 
 interface FamilyNameTooltipProps {
-  familyId: number
+  familyId: string
   familyName: string
   members: MemberInfo[]
 }

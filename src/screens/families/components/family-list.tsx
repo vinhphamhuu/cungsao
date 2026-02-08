@@ -13,9 +13,9 @@ import {DuplicateFamilyDialog} from './duplicate-family-dialog'
 import {FamilyNameTooltip} from './family-name-tooltip'
 
 interface FamilyListProps {
-  areaId?: number
+  areaId?: string
   areas: Area[]
-  groupId?: number
+  groupId?: string
   groups: Group[]
   initialFamilies: FamilyWithMembers[]
   query?: string

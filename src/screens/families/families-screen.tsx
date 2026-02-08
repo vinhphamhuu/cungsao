@@ -11,8 +11,8 @@ export async function FamiliesScreen(props: {
 }) {
   const searchParams = await props.searchParams
   const query = searchParams?.query || ''
-  const areaId = searchParams?.areaId ? parseInt(searchParams.areaId) : undefined
-  const groupId = searchParams?.groupId ? parseInt(searchParams.groupId) : undefined
+  const areaId = searchParams?.areaId
+  const groupId = searchParams?.groupId
 
   const families = await getFamilies(query, areaId, groupId)
   const areas = await getAreas()

@@ -40,8 +40,8 @@ export function CreateFamilyDialog({areas, groups}: CreateFamilyDialogProps) {
 
     const formData = new FormData(event.currentTarget)
     const name = formData.get('name') as string
-    const areaId = Number(formData.get('areaId'))
-    const groupId = Number(formData.get('groupId'))
+    const areaId = formData.get('areaId') as string
+    const groupId = formData.get('groupId') as string
 
     const result = await createFamilyAction({name, areaId, groupId})
 

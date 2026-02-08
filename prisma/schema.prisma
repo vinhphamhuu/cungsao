@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Area {
-  id        Int      @id @default(autoincrement())
+  id        String   @id
   name      String
   address   String   @default("Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã")
   code      String   @unique
@@ -18,7 +18,7 @@ model Area {
 }
 
 model Group {
-  id          Int      @id @default(autoincrement())
+  id          String   @id
   name        String
   description String?
   families    Family[]
@@ -27,11 +27,11 @@ model Group {
 }
 
 model Family {
-  id               Int      @id @default(autoincrement())
+  id               String   @id
   name             String
-  representativeId Int?     @unique // One-to-one with Member (optional initially)
-  groupId          Int
-  areaId           Int
+  representativeId String?  @unique // One-to-one with Member (optional initially)
+  groupId          String
+  areaId           String
   group            Group    @relation(fields: [groupId], references: [id])
   area             Area     @relation(fields: [areaId], references: [id])
   members          Member[] @relation("FamilyMembers")
@@ -46,11 +46,11 @@ enum Gender {
 }
 
 model Member {
-  id                     Int      @id @default(autoincrement())
+  id                     String   @id
   fullName               String
   birthYear              Int
   gender                 Gender
-  familyId               Int
+  familyId               String
   family                 Family   @relation("FamilyMembers", fields: [familyId], references: [id])
   representedFamily      Family?  @relation("FamilyRepresentative")
   createdAt              DateTime @default(now())

@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react'
 import {Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui'
 
 interface FamilyQRProps {
-  familyId: number
+  familyId: string
   familyName: string
 }
 

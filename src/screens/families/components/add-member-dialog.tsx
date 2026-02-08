@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui'
 
-export function AddMemberDialog({familyId}: {familyId: number}) {
+export function AddMemberDialog({familyId}: {familyId: string}) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()

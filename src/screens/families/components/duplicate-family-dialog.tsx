@@ -45,8 +45,8 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
 
   // Form state
   const [name, setName] = useState(sourceFamily.name + ' (Copy)')
-  const [areaId, setAreaId] = useState(sourceFamily.areaId.toString())
-  const [groupId, setGroupId] = useState(sourceFamily.groupId.toString())
+  const [areaId, setAreaId] = useState(sourceFamily.areaId)
+  const [groupId, setGroupId] = useState(sourceFamily.groupId)
 
   // Members state (local copy for editing)
   const [members, setMembers] = useState(
@@ -87,8 +87,8 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
 
     const result = await createFamilyWithMembersAction({
       name,
-      areaId: parseInt(areaId),
-      groupId: parseInt(groupId),
+      areaId,
+      groupId,
       members,
     })
 

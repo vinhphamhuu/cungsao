@@ -81,7 +81,7 @@ export function AreaManagement({areas}: AreaManagementProps) {
     }
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa khu vực này?')) return
 
     const result = await deleteAreaAction(id)

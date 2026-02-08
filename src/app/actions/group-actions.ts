@@ -2,16 +2,17 @@
 
 import {revalidatePath} from 'next/cache'
 
-import {prisma} from '@/lib'
+import {createId, prisma} from '@/lib'
 import {ActionResult} from '@/types'
 
 export async function createGroupAction(data: {
   description?: string
   name: string
-}): Promise<ActionResult<{id: number}>> {
+}): Promise<ActionResult<{id: string}>> {
   try {
     const group = await prisma.group.create({
       data: {
+        id: createId('grp'),
         name: data.name,
         description: data.description,
       },
@@ -27,9 +28,9 @@ export async function createGroupAction(data: {
 
 export async function updateGroupAction(data: {
   description?: string
-  id: number
+  id: string
   name: string
-}): Promise<ActionResult<{id: number}>> {
+}): Promise<ActionResult<{id: string}>> {
   try {
     const group = await prisma.group.update({
       where: {id: data.id},
@@ -47,7 +48,7 @@ export async function updateGroupAction(data: {
   }
 }
 
-export async function deleteGroupAction(id: number): Promise<ActionResult<void>> {
+export async function deleteGroupAction(id: string): Promise<ActionResult<void>> {
   try {
     await prisma.group.delete({
       where: {id},

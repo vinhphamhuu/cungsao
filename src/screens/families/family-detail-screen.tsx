@@ -18,9 +18,6 @@ interface FamilyDetailScreenProps {
 export async function FamilyDetailScreen({params}: FamilyDetailScreenProps) {
   const {id} = await params
 
-  const familyId = parseInt(id)
-  if (isNaN(familyId)) notFound()
-
   const family = await prisma.family.findUnique({
     include: {
       area: true,
@@ -30,7 +27,7 @@ export async function FamilyDetailScreen({params}: FamilyDetailScreenProps) {
       },
       representative: true,
     },
-    where: {id: familyId},
+    where: {id},
   })
 
   const areas = await getAreas()

@@ -3,13 +3,13 @@
 import {Family, Prisma} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
 
-import {prisma} from '@/lib'
+import {createId, prisma} from '@/lib'
 import {ActionResponse, CreateFamilyDTO, CreateFamilyWithMembersDTO, FamilyWithMembers} from '@/types'
 
 export async function getFamilies(
   query?: string,
-  areaId?: number,
-  groupId?: number,
+  areaId?: string,
+  groupId?: string,
   skip: number = 0,
   take: number = 20,
 ): Promise<FamilyWithMembers[]> {
@@ -55,6 +55,7 @@ export async function createFamilyAction(data: CreateFamilyDTO): Promise<ActionR
   try {
     const family = await prisma.family.create({
       data: {
+        id: createId('fam'),
         name: data.name,
         groupId: data.groupId,
         areaId: data.areaId,
@@ -67,7 +68,7 @@ export async function createFamilyAction(data: CreateFamilyDTO): Promise<ActionR
   }
 }
 
-export async function updateFamilyAction(id: number, data: Partial<CreateFamilyDTO>): Promise<ActionResponse<Family>> {
+export async function updateFamilyAction(id: string, data: Partial<CreateFamilyDTO>): Promise<ActionResponse<Family>> {
   try {
     const family = await prisma.family.update({
       where: {id},
@@ -88,40 +89,42 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
       // 1. Create family
       const family = await tx.family.create({
         data: {
+          id: createId('fam'),
           name: data.name,
           groupId: data.groupId,
           areaId: data.areaId,
         },
       })
 
+      let firstMemberId: string | null = null
+
       // 2. Create members
       if (data.members.length > 0) {
-        // Create the first member separately to get its ID for representative
-        const firstMemberData = data.members[0]
-        const firstMember = await tx.member.create({
-          data: {
-            ...firstMemberData,
-            familyId: family.id,
-          },
-        })
+        // Create members one by one or createMany but createMany doesn't return created records in standard SQL/Prisma easily across DBs (though Postgres supports returning).
+        // However, we need IDs.
+        // Best approach: Generate IDs here and insert.
 
-        // Create the rest of the members
-        if (data.members.length > 1) {
-          await tx.member.createMany({
-            data: data.members.slice(1).map((m) => ({
-              ...m,
-              familyId: family.id,
-            })),
-          })
-        }
+        const membersWithIds = data.members.map((m) => ({
+          ...m,
+          id: createId('mem'),
+          familyId: family.id,
+        }))
+
+        firstMemberId = membersWithIds[0].id
+
+        await tx.member.createMany({
+          data: membersWithIds,
+        })
 
         // Update family with the first member as representative
-        return await tx.family.update({
-          where: {id: family.id},
-          data: {
-            representativeId: firstMember.id,
-          },
-        })
+        if (firstMemberId) {
+          return await tx.family.update({
+            where: {id: family.id},
+            data: {
+              representativeId: firstMemberId,
+            },
+          })
+        }
       }
 
       return family
@@ -135,7 +138,7 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
   }
 }
 
-export async function deleteFamilyAction(id: number): Promise<ActionResponse> {
+export async function deleteFamilyAction(id: string): Promise<ActionResponse> {
   try {
     // Delete members first? No, cascade usually handles it or we define logic.
     // Prisma cascade delete:

@@ -1,14 +1,14 @@
 import {Area, Group, Member} from '@prisma/client'
 
 export type CreateFamilyDTO = {
-  areaId: number
-  groupId: number
+  areaId: string
+  groupId: string
   name: string
 }
 
 export type CreateFamilyWithMembersDTO = {
-  areaId: number
-  groupId: number
+  areaId: string
+  groupId: string
   members: {
     birthYear: number
     fullName: string
@@ -19,19 +19,19 @@ export type CreateFamilyWithMembersDTO = {
 
 export interface FamilyWithMembers {
   area: Area
-  areaId: number
+  areaId: string
   createdAt: Date
   group: Group
-  groupId: number
-  id: number
+  groupId: string
+  id: string
   members: Array<{
     birthYear: number
     fullName: string
     gender: 'MALE' | 'FEMALE'
-    id: number
+    id: string
   }>
   name: string
   representative: Member | null
-  representativeId: number | null
+  representativeId: string | null
   updatedAt: Date
 }

@@ -2,6 +2,12 @@ const {PrismaClient} = require('@prisma/client')
 const XLSX = require('xlsx')
 const fs = require('fs')
 const path = require('path')
+const {customAlphabet} = require('nanoid')
+const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 20)
+
+function createId(prefix) {
+  return `${prefix}_${nanoid()}`
+}
 
 const prisma = new PrismaClient()
 
@@ -17,12 +23,13 @@ async function main() {
 
     if (!area) {
       console.log(`Creating Area: ${areaName}`)
-      const code = 'buu_hung_tu' // Hardcoded as per requirement/conventions
+      const code = 'buu_hung_tu'
       area = await prisma.area.create({
         data: {
+          id: createId('ara'),
           name: areaName,
           code: code,
-          address: 'Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã', // Default from schema or just a placeholder if not known
+          address: 'Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã',
         },
       })
     }
@@ -39,9 +46,6 @@ async function main() {
     })
 
     for (const groupName of groupDirs) {
-      // 2. Find or create Group
-      // Normalize group name? The folder names are "ẤP 1", "BÊN SÔNG", etc.
-      // Some might have combining characters.
       let group = await prisma.group.findFirst({
         where: {name: groupName},
       })
@@ -50,6 +54,7 @@ async function main() {
         console.log(`Creating Group: ${groupName}`)
         group = await prisma.group.create({
           data: {
+            id: createId('grp'),
             name: groupName,
             description: `Imported from folder ${groupName}`,
           },
@@ -62,7 +67,6 @@ async function main() {
 
       for (const file of files) {
         const filePath = path.join(groupPath, file)
-        // console.log(`    Processing File: ${file}`);
 
         try {
           const workbook = XLSX.readFile(filePath)
@@ -84,10 +88,7 @@ async function main() {
             continue
           }
 
-          // Extract members
           const members = []
-          // Indices based on the inspection: Name at 1, BirthYear at 4, Gender at 5
-          // But better to find indices dynamically from header row
           const headerRow = data[headerRowIndex]
           const nameIdx = headerRow.indexOf('Họ tên')
           const yearIdx = headerRow.indexOf('Năm sinh')
@@ -109,16 +110,14 @@ async function main() {
             const birthYear = parseInt(rawYear)
 
             const rawGender = row[genderIdx]
-            let gender = 'MALE' // Default? Or fail?
+            let gender = 'MALE'
             if (typeof rawGender === 'string') {
               const g = rawGender.trim().toUpperCase()
               if (g === 'NỮ' || g === 'NU') gender = 'FEMALE'
-              else gender = 'MALE' // Default to MALE for "NAM" or others?
+              else gender = 'MALE'
             }
 
             if (!birthYear || isNaN(birthYear)) {
-              // console.warn(`      Skipping row in ${file}: Invalid birth year for ${name}`);
-              // Some rows might be summary or footer
               continue
             }
 
@@ -134,15 +133,8 @@ async function main() {
             continue
           }
 
-          // 4. Create Family
           const representative = members[0]
           const familyName = `Gia đình ${representative.fullName}`
-
-          // Check if family already exists? Maybe strictly by name matches in this group?
-          // For migration, we might duplicate if we run twice.
-          // Let's assume we create new. OR we can try to find existing.
-          // Given the request "fill vô database", duplicate handling is tricky without unique IDs.
-          // I will check if a family with same name exists in this group and area.
 
           let family = await prisma.family.findFirst({
             where: {
@@ -155,27 +147,21 @@ async function main() {
           if (!family) {
             family = await prisma.family.create({
               data: {
+                id: createId('fam'),
                 name: familyName,
                 groupId: group.id,
                 areaId: area.id,
               },
             })
-            // console.log(`      Created Family: ${familyName}`);
           } else {
-            // console.log(`      Family exists: ${familyName}, skipping creation, checking members...`);
-            // Ideally we should sync members but for now let's just ensure members exist?
-            // If family exists, let's assume it's done or maybe just add missing members?
-            // To avoid complexity and duplicates, if family exists, update logic might be needed.
-            // For this task, "fill vô database" implies populating.
-            // I will skip adding members if family exists to be safe and avoid double insertion on re-run.
             continue
           }
 
-          // Create Members
           let representativeId = null
           for (let i = 0; i < members.length; i++) {
             const m = members[i]
             const input = {
+              id: createId('mem'),
               fullName: m.fullName,
               birthYear: m.birthYear,
               gender: m.gender,
@@ -191,7 +177,6 @@ async function main() {
             }
           }
 
-          // Update Family Representative
           if (representativeId) {
             await prisma.family.update({
               where: {id: family.id},

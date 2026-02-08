@@ -3,7 +3,7 @@
 import {Member} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
 
-import {calculateSao, prisma} from '@/lib'
+import {calculateSao, createId, prisma} from '@/lib'
 import {ActionResponse, CreateMemberDTO} from '@/types'
 
 export type GetMembersParams = {
@@ -32,11 +32,11 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
   }
 
   if (areaId && areaId !== 'ALL') {
-    where.family = {...where.family, areaId: parseInt(areaId)}
+    where.family = {...where.family, areaId: areaId}
   }
 
   if (groupId && groupId !== 'ALL') {
-    where.family = {...where.family, groupId: parseInt(groupId)}
+    where.family = {...where.family, groupId: groupId}
   }
 
   // Handle 'sao' filtering
@@ -126,7 +126,7 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
   return {data, total}
 }
 
-export async function getMembersByFamily(familyId: number) {
+export async function getMembersByFamily(familyId: string) {
   return await prisma.member.findMany({
     where: {familyId},
     orderBy: {
@@ -141,6 +141,7 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
     const member = await prisma.$transaction(async (tx) => {
       const newMember = await tx.member.create({
         data: {
+          id: createId('mem'),
           fullName: data.fullName,
           birthYear: data.birthYear,
           gender: data.gender,
@@ -165,7 +166,7 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
   }
 }
 
-export async function updateMemberAction(id: number, data: Partial<CreateMemberDTO>): Promise<ActionResponse> {
+export async function updateMemberAction(id: string, data: Partial<CreateMemberDTO>): Promise<ActionResponse> {
   try {
     await prisma.member.update({
       where: {id},
@@ -189,7 +190,7 @@ export async function updateMemberAction(id: number, data: Partial<CreateMemberD
   }
 }
 
-export async function deleteMemberAction(id: number): Promise<ActionResponse> {
+export async function deleteMemberAction(id: string): Promise<ActionResponse> {
   try {
     await prisma.member.delete({
       where: {id},

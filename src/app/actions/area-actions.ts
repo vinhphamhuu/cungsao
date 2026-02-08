@@ -2,17 +2,18 @@
 
 import {revalidatePath} from 'next/cache'
 
-import {prisma} from '@/lib'
+import {createId, prisma} from '@/lib'
 import {ActionResult} from '@/types'
 
 export async function createAreaAction(data: {
   address: string
   code: string
   name: string
-}): Promise<ActionResult<{id: number}>> {
+}): Promise<ActionResult<{id: string}>> {
   try {
     const area = await prisma.area.create({
       data: {
+        id: createId('ara'),
         name: data.name,
         code: data.code,
         address: data.address,
@@ -30,9 +31,9 @@ export async function createAreaAction(data: {
 export async function updateAreaAction(data: {
   address: string
   code: string
-  id: number
+  id: string
   name: string
-}): Promise<ActionResult<{id: number}>> {
+}): Promise<ActionResult<{id: string}>> {
   try {
     const area = await prisma.area.update({
       where: {id: data.id},
@@ -51,7 +52,7 @@ export async function updateAreaAction(data: {
   }
 }
 
-export async function deleteAreaAction(id: number): Promise<ActionResult<void>> {
+export async function deleteAreaAction(id: string): Promise<ActionResult<void>> {
   try {
     await prisma.area.delete({
       where: {id},

@@ -4,12 +4,20 @@ import {PrismaClient} from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+import {customAlphabet} from 'nanoid'
+
+const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 20)
+function createId(prefix: string) {
+  return `${prefix}_${nanoid()}`
+}
+
 async function main() {
   // Areas
   const area1 = await prisma.area.upsert({
     where: {code: 'CHUA_A'},
     update: {},
     create: {
+      id: createId('ara'),
       address: 'Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã',
       code: 'CHUA_A',
       name: 'Bửu Hưng Tự',
@@ -20,6 +28,7 @@ async function main() {
     where: {code: 'CHUA_B'},
     update: {},
     create: {
+      id: createId('ara'),
       address: 'Việt Nam quốc, TP. Hồ Chí Minh, Quận 3, Phường Võ Thị Sáu',
       code: 'CHUA_B',
       name: 'Chùa Vĩnh Nghiêm',
@@ -29,6 +38,7 @@ async function main() {
   // Groups
   const group1 = await prisma.group.create({
     data: {
+      id: createId('grp'),
       name: 'Ấp 1',
       description: 'Khu vực chợ',
     },
@@ -36,6 +46,7 @@ async function main() {
 
   const group2 = await prisma.group.create({
     data: {
+      id: createId('grp'),
       name: 'Phường Đa Kao',
       description: 'Khu dân cư',
     },

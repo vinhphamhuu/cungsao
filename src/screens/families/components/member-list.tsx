@@ -27,7 +27,7 @@ export function MemberList({members}: MemberListProps) {
     setMounted(true)
   }, [])
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Bạn có chắc muốn xoá thành viên này?')) {
       await deleteMemberAction(id)
       router.refresh()

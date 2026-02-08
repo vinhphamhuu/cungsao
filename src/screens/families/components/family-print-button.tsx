@@ -139,7 +139,7 @@ export function FamilyPrintButton({family}: FamilyPrintButtonProps) {
                   )
                 }
 
-                const sao = calculateSao(member.birthYear, member.gender, currentYear)
+                const sao = calculateSao(member.birthYear, member.gender, currentYear) || 'N/A'
                 const age = currentYear - member.birthYear + 1
 
                 return (
