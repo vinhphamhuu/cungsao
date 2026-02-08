@@ -5,14 +5,12 @@ import {useTheme} from 'next-themes'
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui'
 
-interface SaoChartProps {
-  color: string
-  data: {name: string; value: number}[]
-  description: string
+interface AgeGenderChartProps {
+  data: {female: number; male: number; name: string}[]
   title: string
 }
 
-export function SaoChart({data, title, color, description}: SaoChartProps) {
+export function AgeGenderChart({data, title}: AgeGenderChartProps) {
   const {theme} = useTheme()
   const isDark = theme === 'dark'
 
@@ -42,29 +40,31 @@ export function SaoChart({data, title, color, description}: SaoChartProps) {
         borderColor: isDark ? '#a1a1aa' : '#71717a',
       },
     },
+    legend: {
+      top: 10,
+      right: '15%',
+      data: ['Nam', 'Nữ'],
+      textStyle: {
+        color: isDark ? '#a1a1aa' : '#71717a',
+      },
+    },
     grid: {
       left: '3%',
       right: '4%',
-      bottom: '10%',
-      top: '15%',
+      bottom: '3%',
+      top: '20%',
       containLabel: true,
     },
     xAxis: {
       type: 'category',
       data: data.map((d) => d.name),
-      axisTick: {
-        alignWithLabel: true,
-      },
       axisLine: {
         lineStyle: {
           color: isDark ? '#3f3f46' : '#e4e4e7', // zinc-700 : zinc-200
         },
       },
       axisLabel: {
-        interval: 0,
-        rotate: 45,
         color: isDark ? '#a1a1aa' : '#71717a', // zinc-400 : zinc-500
-        fontSize: 11,
       },
     },
     yAxis: {
@@ -81,15 +81,9 @@ export function SaoChart({data, title, color, description}: SaoChartProps) {
     },
     series: [
       {
-        name: 'Số lượng',
+        name: 'Nam',
         type: 'bar',
-        barWidth: '50%',
-        data: data.map((d) => d.value),
-        showBackground: true,
-        backgroundStyle: {
-          color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-          borderRadius: 4,
-        },
+        data: data.map((d) => d.male),
         itemStyle: {
           color: {
             type: 'linear',
@@ -98,20 +92,30 @@ export function SaoChart({data, title, color, description}: SaoChartProps) {
             x2: 0,
             y2: 1,
             colorStops: [
-              {offset: 0, color: color},
-              {offset: 1, color: isDark ? '#000000' : '#ffffff'},
+              {offset: 0, color: '#3b82f6'}, // blue-500
+              {offset: 1, color: '#60a5fa'}, // blue-400
             ],
           },
-          borderRadius: [6, 6, 0, 0],
-          shadowBlur: 10,
-          shadowColor: 'rgba(0,0,0,0.1)',
+          borderRadius: [4, 4, 0, 0],
         },
-        emphasis: {
-          itemStyle: {
-            opacity: 0.8,
-            shadowBlur: 20,
-            shadowColor: 'rgba(0,0,0,0.2)',
+      },
+      {
+        name: 'Nữ',
+        type: 'bar',
+        data: data.map((d) => d.female),
+        itemStyle: {
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {offset: 0, color: '#f43f5e'}, // rose-500
+              {offset: 1, color: '#fb7185'}, // rose-400
+            ],
           },
+          borderRadius: [4, 4, 0, 0],
         },
       },
     ],
@@ -121,7 +125,7 @@ export function SaoChart({data, title, color, description}: SaoChartProps) {
     <Card>
       <CardHeader className="py-4">
         <CardTitle className="text-base font-semibold">{title}</CardTitle>
-        <CardDescription className="text-[11px]">{description}</CardDescription>
+        <CardDescription className="text-[11px]">Thống kê độ tuổi phân biệt theo giới tính</CardDescription>
       </CardHeader>
       <CardContent className="pb-4">
         <div className="h-[300px] w-full">
