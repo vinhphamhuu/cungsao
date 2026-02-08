@@ -27,10 +27,11 @@ export function FamilyNameTooltip({familyId, familyName, members}: FamilyNameToo
             {familyName}
           </Link>
         </TooltipTrigger>
-        <TooltipContent className="p-4" side="right" align="start">
-          <p className="font-bold mb-2 border-b pb-1">
-            {familyName} ({members.length} thành viên)
-          </p>
+        <TooltipContent className="p-4 glass-card border border-white/20" side="top" sideOffset={8}>
+          <div className="mb-2 border-b pb-1">
+            <p className="font-bold">{familyName}</p>
+            <p className="text-xs text-muted-foreground">{members.length} thành viên</p>
+          </div>
           {members.length === 0 ? (
             <p className="text-sm text-muted-foreground">Chưa có thành viên.</p>
           ) : (
