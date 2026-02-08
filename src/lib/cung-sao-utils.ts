@@ -145,7 +145,7 @@ export function getSaoColor(sao: string): string {
 // Kế Đô (6) -> Vân Hán (5) -> Mộc Đức (8) ??? No, 5 -> 8 is +3?
 // Let's use a fixed lookup array for indices to be safe.
 
-const AGE_REMAINDER_MAP_MALE = [
+export const AGE_REMAINDER_MAP_MALE = [
   'La Hầu', // 10 (1)
   'Thổ Tú', // 11 (2)
   'Thủy Diệu', // 12 (0) -> wait 12+9=21 Thủy Diệu. (10, 19, 28... La Hầu)
@@ -159,7 +159,7 @@ const AGE_REMAINDER_MAP_MALE = [
 // Male pattern: La Hầu -> Thổ Tú -> Thủy Diệu -> Thái Bạch -> Thái Dương -> Vân Hán -> Kế Đô -> Thái Âm -> Mộc Đức
 // It cycles forward.
 
-const AGE_REMAINDER_MAP_FEMALE = [
+export const AGE_REMAINDER_MAP_FEMALE = [
   'Kế Đô', // 10
   'Vân Hán', // 11
   'Mộc Đức', // 12

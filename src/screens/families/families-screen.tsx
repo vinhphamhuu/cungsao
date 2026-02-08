@@ -1,9 +1,6 @@
-import Link from 'next/link'
-
 import {getAreas, getFamilies, getGroups} from '@/app/actions'
-import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
 
-import {CreateFamilyDialog, DuplicateFamilyDialog, FamilyFilters, FamilyNameTooltip} from './components'
+import {CreateFamilyDialog, FamilyFilters, FamilyList} from './components'
 
 export async function FamiliesScreen(props: {
   searchParams?: Promise<{
@@ -35,49 +32,15 @@ export async function FamiliesScreen(props: {
 
       <FamilyFilters areas={areas} groups={groups} />
 
-      <div className="glass-card overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Tên Gia Đình</TableHead>
-              <TableHead>Người Đại Diện</TableHead>
-              <TableHead>Khu vực</TableHead>
-              <TableHead>Nhóm</TableHead>
-              <TableHead>Thành viên</TableHead>
-              <TableHead className="text-right">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {families.length === 0 ? (
-              <TableRow>
-                <TableCell className="h-24 text-center" colSpan={6}>
-                  Chưa có gia đình nào.
-                </TableCell>
-              </TableRow>
-            ) : (
-              families.map((family) => (
-                <TableRow key={family.id}>
-                  <TableCell className="font-medium">
-                    <FamilyNameTooltip familyId={family.id} familyName={family.name} members={family.members} />
-                  </TableCell>
-                  <TableCell>{family.representative?.fullName || 'Chưa có'}</TableCell>
-                  <TableCell>{family.area?.name}</TableCell>
-                  <TableCell>{family.group?.name}</TableCell>
-                  <TableCell>{family.members.length}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end items-center gap-1">
-                      <DuplicateFamilyDialog areas={areas} groups={groups} sourceFamily={family} />
-                      <Button asChild size="sm" variant="ghost">
-                        <Link href={`/family/${family.id}`}>Chi tiết</Link>
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <FamilyList
+        key={JSON.stringify({query, areaId, groupId})} // Reset state when filters change
+        initialFamilies={families}
+        areas={areas}
+        groups={groups}
+        query={query}
+        areaId={areaId}
+        groupId={groupId}
+      />
     </div>
   )
 }

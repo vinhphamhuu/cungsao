@@ -1,2 +1,2 @@
-export * from './cung-sao-table'
+export * from './cung-sao-list'
 export * from './sao-badge'

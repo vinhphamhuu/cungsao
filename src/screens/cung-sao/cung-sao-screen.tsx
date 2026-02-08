@@ -1,9 +1,9 @@
-import {getAllMembers, getAreas, getGroups} from '@/app/actions'
+import {getAreas, getGroups, getMembers} from '@/app/actions'
 
-import {CungSaoTable} from './components'
+import {CungSaoList} from './components'
 
 export async function CungSaoScreen() {
-  const members = await getAllMembers()
+  const {data: members, total} = await getMembers()
   const areas = await getAreas()
   const groups = await getGroups()
 
@@ -14,7 +14,7 @@ export async function CungSaoScreen() {
         <p className="text-muted-foreground">Tổng hợp tất cả thành viên và sao hạn năm nay.</p>
       </div>
 
-      <CungSaoTable areas={areas} groups={groups} initMembers={members} />
+      <CungSaoList areas={areas} groups={groups} initialMembers={members} initialTotal={total} />
     </div>
   )
 }

@@ -6,7 +6,13 @@ import {revalidatePath} from 'next/cache'
 import {prisma} from '@/lib'
 import {ActionResponse, CreateFamilyDTO, CreateFamilyWithMembersDTO, FamilyWithMembers} from '@/types'
 
-export async function getFamilies(query?: string, areaId?: number, groupId?: number): Promise<FamilyWithMembers[]> {
+export async function getFamilies(
+  query?: string,
+  areaId?: number,
+  groupId?: number,
+  skip: number = 0,
+  take: number = 20,
+): Promise<FamilyWithMembers[]> {
   const where: Prisma.FamilyWhereInput = {}
 
   if (query) {
@@ -37,6 +43,8 @@ export async function getFamilies(query?: string, areaId?: number, groupId?: num
     orderBy: {
       createdAt: 'desc',
     },
+    skip,
+    take,
   })
 }
 
