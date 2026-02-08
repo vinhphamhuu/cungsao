@@ -38,7 +38,9 @@ export function FamilyNameTooltip({familyId, familyName, members}: FamilyNameToo
               {members.map((member) => (
                 <li key={member.id} className="text-sm whitespace-nowrap">
                   <span className="font-medium">{member.fullName}</span>
-                  <span className="text-muted-foreground ml-2">- {currentYear - member.birthYear + 1} tuổi</span>
+                  <span className="text-muted-foreground ml-2" suppressHydrationWarning>
+                    - {currentYear - member.birthYear + 1} tuổi
+                  </span>
                 </li>
               ))}
             </ul>

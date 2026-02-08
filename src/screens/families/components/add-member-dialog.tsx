@@ -89,6 +89,7 @@ export function AddMemberDialog({familyId}: {familyId: number}) {
                 defaultValue="1980"
                 className="col-span-3"
                 required
+                suppressHydrationWarning
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

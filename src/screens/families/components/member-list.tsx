@@ -3,11 +3,12 @@
 import {Member} from '@prisma/client'
 import {Trash2} from 'lucide-react'
 import {useRouter} from 'next/navigation'
+import {useEffect, useState} from 'react'
 
 import {deleteMemberAction} from '@/app/actions'
-import {SaoBadge} from '@/components/cung-sao'
 import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui'
 import {calculateSao} from '@/lib'
+import {SaoBadge} from '@/screens/cung-sao/components'
 
 import {EditMemberDialog} from './edit-member-dialog'
 
@@ -18,8 +19,13 @@ interface MemberListProps {
 }
 
 export function MemberList({members}: MemberListProps) {
-  const currentYear = new Date().getFullYear()
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
 
   const handleDelete = async (id: number) => {
     if (confirm('Bạn có chắc muốn xoá thành viên này?')) {
@@ -50,18 +56,17 @@ export function MemberList({members}: MemberListProps) {
             </TableRow>
           ) : (
             members.map((member) => {
-              const age = currentYear - member.birthYear + 1
-              const sao = calculateSao(member.birthYear, member.gender, currentYear)
+              const year = new Date().getFullYear()
+              const age = year - member.birthYear + 1
+              const sao = calculateSao(member.birthYear, member.gender, year)
 
               return (
                 <TableRow key={member.id}>
                   <TableCell className="font-medium">{member.fullName}</TableCell>
                   <TableCell>{member.birthYear}</TableCell>
-                  <TableCell>{age}</TableCell>
+                  <TableCell>{mounted ? age : '-'}</TableCell>
                   <TableCell>{member.gender === 'MALE' ? 'Nam' : 'Nữ'}</TableCell>
-                  <TableCell>
-                    <SaoBadge sao={sao} />
-                  </TableCell>
+                  <TableCell>{mounted ? <SaoBadge sao={sao} /> : '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <EditMemberDialog member={member} />

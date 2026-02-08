@@ -2,9 +2,8 @@
 
 import {Area, Group} from '@prisma/client'
 import Link from 'next/link'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
-import {SaoBadge} from '@/components/cung-sao'
 import {
   Input,
   Select,
@@ -22,6 +21,8 @@ import {
 import {calculateSao, SAO_LIST} from '@/lib'
 import {MemberWithFamily} from '@/types'
 
+import {SaoBadge} from './sao-badge'
+
 interface CungSaoTableProps {
   areas: Area[]
   groups: Group[]
@@ -33,12 +34,19 @@ export function CungSaoTable({initMembers, areas, groups}: CungSaoTableProps) {
   const [filterSao, setFilterSao] = useState('ALL')
   const [filterArea, setFilterArea] = useState('ALL')
   const [filterGroup, setFilterGroup] = useState('ALL')
-  const currentYear = new Date().getFullYear()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
+
+  const effectiveYear = new Date().getFullYear()
 
   // Process data
   const data = initMembers.map((m) => {
-    const sao = calculateSao(m.birthYear, m.gender, currentYear)
-    return {...m, sao, age: currentYear - m.birthYear + 1}
+    const sao = calculateSao(m.birthYear, m.gender, effectiveYear)
+    return {...m, sao, age: effectiveYear - m.birthYear + 1}
   })
 
   const filteredData = data.filter((item) => {
@@ -120,11 +128,9 @@ export function CungSaoTable({initMembers, areas, groups}: CungSaoTableProps) {
               <TableRow key={item.id}>
                 <TableCell className="font-medium">{item.fullName}</TableCell>
                 <TableCell>{item.birthYear}</TableCell>
-                <TableCell>{item.age}</TableCell>
+                <TableCell>{mounted ? item.age : '-'}</TableCell>
                 <TableCell>{item.gender === 'MALE' ? 'Nam' : 'Nữ'}</TableCell>
-                <TableCell>
-                  <SaoBadge sao={item.sao} />
-                </TableCell>
+                <TableCell>{mounted ? <SaoBadge sao={item.sao} /> : '-'}</TableCell>
                 <TableCell>
                   <Link href={`/families/${item.family.id}`} className="hover:underline text-blue-500">
                     {item.family.name}

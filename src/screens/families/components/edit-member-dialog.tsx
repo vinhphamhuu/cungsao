@@ -91,6 +91,7 @@ export function EditMemberDialog({member}: EditMemberDialogProps) {
                 defaultValue={member.birthYear}
                 className="col-span-3"
                 required
+                suppressHydrationWarning
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
