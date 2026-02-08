@@ -68,7 +68,7 @@ export async function FamiliesScreen(props: {
                     <div className="flex justify-end items-center gap-1">
                       <DuplicateFamilyDialog areas={areas} groups={groups} sourceFamily={family} />
                       <Button asChild size="sm" variant="ghost">
-                        <Link href={`/families/${family.id}`}>Chi tiết</Link>
+                        <Link href={`/family/${family.id}`}>Chi tiết</Link>
                       </Button>
                     </div>
                   </TableCell>

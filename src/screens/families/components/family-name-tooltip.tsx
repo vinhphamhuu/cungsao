@@ -23,7 +23,7 @@ export function FamilyNameTooltip({familyId, familyName, members}: FamilyNameToo
     <TooltipProvider>
       <Tooltip delayDuration={200}>
         <TooltipTrigger asChild>
-          <Link href={`/families/${familyId}`} className="hover:underline text-blue-600 font-medium block">
+          <Link href={`/family/${familyId}`} className="hover:underline text-blue-600 font-medium block">
             {familyName}
           </Link>
         </TooltipTrigger>

@@ -64,10 +64,10 @@ export async function HomeScreen() {
 
       <div className="flex gap-4">
         <Button asChild size="lg">
-          <Link href="/families">Quản lý Gia Đình</Link>
+          <Link href="/family">Quản lý Gia Đình</Link>
         </Button>
         <Button asChild variant="secondary" size="lg">
-          <Link href="/cung-sao">Tra Cứu Cúng Sao</Link>
+          <Link href="/stars">Tra Cứu Cúng Sao</Link>
         </Button>
       </div>
 

@@ -53,7 +53,7 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
       return newMember
     })
 
-    revalidatePath(`/families/${data.familyId}`)
+    revalidatePath(`/family/${data.familyId}`)
     return {success: true, data: member}
   } catch (error) {
     console.error(error)

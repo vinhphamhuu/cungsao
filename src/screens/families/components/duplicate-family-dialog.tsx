@@ -95,7 +95,7 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
     setIsLoading(false)
     if (result.success && result.data) {
       setOpen(false)
-      router.push(`/families/${result.data.id}`)
+      router.push(`/family/${result.data.id}`)
       router.refresh()
     } else {
       alert('Lỗi: ' + (result.error || 'Không thể tạo gia đình'))

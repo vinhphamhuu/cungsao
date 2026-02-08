@@ -11,8 +11,8 @@ export function MainNav() {
 
   const navItems = [
     {href: '/', label: 'Trang chủ'},
-    {href: '/families', label: 'Gia Đình'},
-    {href: '/cung-sao', label: 'Danh sách Cúng Sao'},
+    {href: '/family', label: 'Gia Đình'},
+    {href: '/stars', label: 'Danh sách Cúng Sao'},
   ]
 
   return (

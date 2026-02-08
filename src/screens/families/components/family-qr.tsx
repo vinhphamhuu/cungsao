@@ -21,7 +21,7 @@ export function FamilyQR({familyId, familyName}: FamilyQRProps) {
 
   if (!isMounted) return null
 
-  const url = `${window.location.origin}/families/${familyId}`
+  const url = `${window.location.origin}/family/${familyId}`
 
   return (
     <Dialog>

@@ -132,7 +132,7 @@ export function CungSaoTable({initMembers, areas, groups}: CungSaoTableProps) {
                 <TableCell>{item.gender === 'MALE' ? 'Nam' : 'Nữ'}</TableCell>
                 <TableCell>{mounted ? <SaoBadge sao={item.sao} /> : '-'}</TableCell>
                 <TableCell>
-                  <Link href={`/families/${item.family.id}`} className="hover:underline text-blue-500">
+                  <Link href={`/family/${item.family.id}`} className="hover:underline text-blue-500">
                     {item.family.name}
                   </Link>
                 </TableCell>

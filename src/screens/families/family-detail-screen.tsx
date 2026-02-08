@@ -42,7 +42,7 @@ export async function FamilyDetailScreen({params}: FamilyDetailScreenProps) {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Button asChild size="icon" variant="ghost">
-          <Link href="/families">
+          <Link href="/family">
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
