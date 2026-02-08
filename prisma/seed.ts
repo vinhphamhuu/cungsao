@@ -10,8 +10,9 @@ async function main() {
     where: {code: 'CHUA_A'},
     update: {},
     create: {
-      name: 'Chùa Pháp Hoa',
+      address: 'Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã',
       code: 'CHUA_A',
+      name: 'Bửu Hưng Tự',
     },
   })
 
@@ -19,8 +20,9 @@ async function main() {
     where: {code: 'CHUA_B'},
     update: {},
     create: {
-      name: 'Chùa Vĩnh Nghiêm',
+      address: 'Việt Nam quốc, TP. Hồ Chí Minh, Quận 3, Phường Võ Thị Sáu',
       code: 'CHUA_B',
+      name: 'Chùa Vĩnh Nghiêm',
     },
   })
 

@@ -110,9 +110,9 @@ export function FamilyPrintButton({family}: FamilyPrintButtonProps) {
           <div className="header-text">NAM MÔ A DI ĐÀ PHẬT</div>
 
           <div className="sub-header mx-auto max-w-[90%]">
-            Tai tín thối độ đầu tú tinh quân, việc tội tiêu trừ kỳ tăng phước thọ, sớ vì Việt Nam quốc,{' '}
-            {family.area?.name || '..........'} tỉnh, {family.group?.name || '..........'} cư cung tựu, Bửu Hưng Tự, trụ
-            phụng Phật tu hương thiết cúng tai tin, kỳ an bá tánh kim vì tín chủ.
+            Tai tín thối độ đầu tú tinh quân, việc tội tiêu trừ kỳ tăng phước thọ, sớ vì{' '}
+            {family.area?.address || '..........'}, cư cung tựu, {family.area?.name || '..........'}, trụ phụng Phật tu
+            hương thiết cúng tai tin, kỳ an bá tánh kim vì tín chủ.
           </div>
 
           <table>

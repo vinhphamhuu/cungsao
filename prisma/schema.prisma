@@ -10,6 +10,7 @@ datasource db {
 model Area {
   id        Int      @id @default(autoincrement())
   name      String
+  address   String   @default("Việt Nam quốc, Tiền Giang tỉnh, Gò Công thị xã, Bình Xuân xã")
   code      String   @unique
   families  Family[]
   createdAt DateTime @default(now())
