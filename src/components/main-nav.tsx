@@ -1,9 +1,11 @@
 'use client'
 
+import {Settings} from 'lucide-react'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 
 import {ModeToggle} from '@/components/mode-toggle'
+import {Button} from '@/components/ui'
 import {cn} from '@/lib/utils'
 
 export function MainNav() {
@@ -39,7 +41,13 @@ export function MainNav() {
             )
           })}
         </nav>
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="ml-auto flex items-center space-x-2">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/settings">
+              <Settings className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+              <span className="sr-only">Cài đặt</span>
+            </Link>
+          </Button>
           <ModeToggle />
         </div>
       </div>

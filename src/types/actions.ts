@@ -3,3 +3,5 @@ export type ActionResponse<T = unknown> = {
   error?: string
   success: boolean
 }
+
+export type ActionResult<T = unknown> = ActionResponse<T>
