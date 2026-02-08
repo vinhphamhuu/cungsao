@@ -10,6 +10,7 @@ import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} f
 import {FamilyWithMembers} from '@/types'
 
 import {DuplicateFamilyDialog} from './duplicate-family-dialog'
+import {FamilyDeleteButton} from './family-delete-button'
 import {FamilyNameTooltip} from './family-name-tooltip'
 
 interface FamilyListProps {
@@ -28,6 +29,10 @@ export function FamilyList({initialFamilies, areas, groups, query, areaId, group
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(initialFamilies.length >= PAGE_SIZE)
   const [page, setPage] = useState(1)
+
+  const handleRemoveFamily = (familyId: string) => {
+    setFamilies((prev) => prev.filter((f) => f.id !== familyId))
+  }
 
   const loadMore = async () => {
     if (loading || !hasMore) return
@@ -83,6 +88,13 @@ export function FamilyList({initialFamilies, areas, groups, query, areaId, group
                   <TableCell>{family.members.length}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end items-center gap-1">
+                      <FamilyDeleteButton
+                        familyId={family.id}
+                        familyName={family.name}
+                        redirect={false}
+                        onSuccess={() => handleRemoveFamily(family.id)}
+                        iconOnly
+                      />
                       <DuplicateFamilyDialog areas={areas} groups={groups} sourceFamily={family} />
                       <Button asChild size="sm" variant="ghost">
                         <Link href={`/family/${family.id}`}>Chi tiết</Link>
