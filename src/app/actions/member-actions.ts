@@ -154,7 +154,10 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
       if (data.isRepresentative) {
         await tx.family.update({
           where: {id: data.familyId},
-          data: {representativeId: newMember.id},
+          data: {
+            representativeId: newMember.id,
+            name: newMember.fullName,
+          },
         })
       }
       return newMember
@@ -170,24 +173,40 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
 
 export async function updateMemberAction(id: string, data: Partial<CreateMemberDTO>): Promise<ActionResponse> {
   try {
-    await prisma.member.update({
+    const member = await prisma.member.findUnique({
       where: {id},
-      data: {
-        fullName: data.fullName,
-        birthYear: data.birthYear,
-        gender: data.gender,
-        // familyId usually doesn't change easily, but possible
-      },
+      include: {representedFamily: true},
     })
 
-    if (data.isRepresentative !== undefined) {
-      // handle toggle representative?
-      // If true, set. If false? Maybe check if currently representative.
-    }
+    if (!member) return {success: false, error: 'Member not found'}
 
-    revalidatePath('/')
+    await prisma.$transaction(async (tx) => {
+      const updatedMember = await tx.member.update({
+        where: {id},
+        data: {
+          fullName: data.fullName,
+          birthYear: data.birthYear,
+          gender: data.gender,
+        },
+      })
+
+      // Update family name if this member is currently the representative
+      // OR they are being set as the new representative
+      if (data.isRepresentative || member.representedFamily) {
+        await tx.family.update({
+          where: {id: data.familyId || member.familyId},
+          data: {
+            representativeId: id,
+            name: updatedMember.fullName,
+          },
+        })
+      }
+    })
+
+    revalidatePath(`/family/${data.familyId || member.familyId}`)
     return {success: true}
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {success: false, error: 'Failed to update member'}
   }
 }

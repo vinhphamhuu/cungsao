@@ -38,12 +38,14 @@ export function EditMemberDialog({member}: EditMemberDialogProps) {
     const fullName = capitalizeName(formData.get('fullName') as string)
     const birthYear = Number(formData.get('birthYear'))
     const genderValue = formData.get('gender') as Gender
+    const isRepresentative = formData.get('isRepresentative') === 'on'
 
     const result = await updateMemberAction(member.id, {
       fullName,
       birthYear,
       gender: genderValue,
       familyId: member.familyId,
+      isRepresentative,
     })
 
     setIsLoading(false)
@@ -169,6 +171,18 @@ export function EditMemberDialog({member}: EditMemberDialogProps) {
                   Nữ
                 </button>
                 <input type="hidden" name="gender" value={gender} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <div className="col-start-2 col-span-3 flex items-center space-x-2">
+                <Input
+                  type="checkbox"
+                  id="isRepresentative"
+                  name="isRepresentative"
+                  className="h-4 w-4 w-auto display-inline"
+                />
+                <Label htmlFor="isRepresentative">Đặt làm người đại diện mới</Label>
               </div>
             </div>
           </div>
