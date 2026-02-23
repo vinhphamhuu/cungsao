@@ -101,12 +101,25 @@ export function FamilyPrintButton({family}: FamilyPrintButtonProps) {
               font-size: 12pt;
               line-height: 1.4;
             }
+            .group-name-box {
+              position: absolute;
+              top: 0;
+              right: 0;
+              border: 1.5px solid black;
+              border-radius: 4px;
+              padding: 4px 12px;
+              font-weight: bold;
+              font-size: 14pt;
+              min-width: 100px;
+              text-align: center;
+            }
           }
         `,
           }}
         />
 
         <div className="print-container">
+          <div className="group-name-box">{family.group?.name || '..........'}</div>
           <div className="header-text">NAM MÔ A DI ĐÀ PHẬT</div>
 
           <div className="sub-header mx-auto max-w-[90%]">
