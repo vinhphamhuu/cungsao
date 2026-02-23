@@ -1,7 +1,7 @@
 'use client'
 
 import {Gender} from '@prisma/client'
-import {UserPlus} from 'lucide-react'
+import {Check, UserPlus} from 'lucide-react'
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 
@@ -17,16 +17,12 @@ import {
   DialogTrigger,
   Input,
   Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from '@/components/ui'
 
 export function AddMemberDialog({familyId}: {familyId: string}) {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [gender, setGender] = useState<Gender>(Gender.MALE)
   const router = useRouter()
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -96,15 +92,33 @@ export function AddMemberDialog({familyId}: {familyId: string}) {
               <Label htmlFor="gender" className="text-right">
                 Giới tính
               </Label>
-              <Select name="gender" required defaultValue="MALE">
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Chọn giới tính" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="MALE">Nam</SelectItem>
-                  <SelectItem value="FEMALE">Nữ</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-3 flex bg-secondary/50 p-1 rounded-lg w-full max-w-[200px]">
+                <button
+                  type="button"
+                  onClick={() => setGender(Gender.MALE)}
+                  className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-1.5 ${
+                    gender === Gender.MALE
+                      ? 'bg-background text-blue-600 dark:text-blue-400 shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {gender === Gender.MALE && <Check className="h-3.5 w-3.5" />}
+                  Nam
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGender(Gender.FEMALE)}
+                  className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-1.5 ${
+                    gender === Gender.FEMALE
+                      ? 'bg-background text-pink-600 dark:text-pink-400 shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {gender === Gender.FEMALE && <Check className="h-3.5 w-3.5" />}
+                  Nữ
+                </button>
+                <input type="hidden" name="gender" value={gender} />
+              </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <div className="col-start-2 col-span-3 flex items-center space-x-2">

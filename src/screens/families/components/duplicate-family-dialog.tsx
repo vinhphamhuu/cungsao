@@ -1,7 +1,7 @@
 'use client'
 
 import {Area, Group} from '@prisma/client'
-import {Copy, Plus, Trash2} from 'lucide-react'
+import {Check, Copy, Plus, Trash2} from 'lucide-react'
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 
@@ -204,18 +204,32 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
                         />
                       </TableCell>
                       <TableCell>
-                        <Select
-                          value={member.gender}
-                          onValueChange={(val) => handleMemberChange(idx, 'gender', val as 'MALE' | 'FEMALE')}
-                        >
-                          <SelectTrigger className="h-8">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="MALE">Nam</SelectItem>
-                            <SelectItem value="FEMALE">Nữ</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <div className="flex bg-secondary/50 p-0.5 rounded-md w-fit">
+                          <button
+                            type="button"
+                            onClick={() => handleMemberChange(idx, 'gender', 'MALE')}
+                            className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
+                              member.gender === 'MALE'
+                                ? 'bg-background text-blue-600 dark:text-blue-400 shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                          >
+                            {member.gender === 'MALE' && <Check className="h-3 w-3" />}
+                            Nam
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleMemberChange(idx, 'gender', 'FEMALE')}
+                            className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
+                              member.gender === 'FEMALE'
+                                ? 'bg-background text-pink-600 dark:text-pink-400 shadow-sm'
+                                : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                          >
+                            {member.gender === 'FEMALE' && <Check className="h-3 w-3" />}
+                            Nữ
+                          </button>
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Button
