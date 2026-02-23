@@ -44,19 +44,19 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
+  // Members state (local copy for editing)
+  const initialMembers = sourceFamily.members.map((m) => ({
+    fullName: m.fullName,
+    birthYear: m.birthYear,
+    gender: m.gender as 'MALE' | 'FEMALE',
+  }))
+
+  const [members, setMembers] = useState(initialMembers)
+
   // Form state
-  const [name, setName] = useState(sourceFamily.name + ' (Copy)')
+  const [name, setName] = useState(`Gia đình ${initialMembers[0]?.fullName || ''}`)
   const [areaId, setAreaId] = useState(sourceFamily.areaId)
   const [groupId, setGroupId] = useState(sourceFamily.groupId)
-
-  // Members state (local copy for editing)
-  const [members, setMembers] = useState(
-    sourceFamily.members.map((m) => ({
-      fullName: m.fullName,
-      birthYear: m.birthYear,
-      gender: m.gender as 'MALE' | 'FEMALE',
-    })),
-  )
 
   const handleAddMember = () => {
     setMembers([...members, {fullName: 'Thành viên mới', birthYear: new Date().getFullYear(), gender: 'MALE'}])
@@ -76,6 +76,11 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
     const newMembers = [...members]
     newMembers[index] = {...newMembers[index], [field]: value}
     setMembers(newMembers)
+
+    // Update family name if first member's name changes
+    if (index === 0 && field === 'fullName') {
+      setName(`Gia đình ${value}`)
+    }
   }
 
   async function onSubmit() {
@@ -127,8 +132,8 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
             <Label className="font-bold underline mb-2">Thông tin chung</Label>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Tên Gia Đình</Label>
-                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                <Label htmlFor="name">Tên Gia Đình (Tự động)</Label>
+                <Input id="name" value={name} readOnly className="bg-muted cursor-not-allowed" />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">

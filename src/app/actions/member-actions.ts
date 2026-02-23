@@ -156,7 +156,7 @@ export async function createMemberAction(data: CreateMemberDTO): Promise<ActionR
           where: {id: data.familyId},
           data: {
             representativeId: newMember.id,
-            name: newMember.fullName,
+            name: `Gia đình ${newMember.fullName}`,
           },
         })
       }
@@ -197,7 +197,7 @@ export async function updateMemberAction(id: string, data: Partial<CreateMemberD
           where: {id: data.familyId || member.familyId},
           data: {
             representativeId: id,
-            name: updatedMember.fullName,
+            name: `Gia đình ${updatedMember.fullName}`,
           },
         })
       }

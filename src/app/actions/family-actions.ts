@@ -144,10 +144,12 @@ export async function createFamilyWithMembersAction(data: CreateFamilyWithMember
 
         // Update family with the first member as representative
         if (firstMemberId) {
+          const firstMember = membersWithIds[0]
           return await tx.family.update({
             where: {id: family.id},
             data: {
               representativeId: firstMemberId,
+              name: `Gia đình ${firstMember.fullName}`,
             },
           })
         }
