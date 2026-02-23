@@ -3,7 +3,7 @@
 import {Area, Group} from '@prisma/client'
 import {Check, Copy, Plus, Trash2} from 'lucide-react'
 import {useRouter} from 'next/navigation'
-import {useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 import {createFamilyWithMembersAction} from '@/app/actions'
 import {
@@ -57,6 +57,28 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
   const [name, setName] = useState(`Gia đình ${initialMembers[0]?.fullName || ''}`)
   const [areaId, setAreaId] = useState(sourceFamily.areaId)
   const [groupId, setGroupId] = useState(sourceFamily.groupId)
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const prevLengthRef = useRef(members.length)
+
+  useEffect(() => {
+    if (members.length > prevLengthRef.current && scrollContainerRef.current) {
+      // Scroll to bottom
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
+
+      // Focus last name input
+      const inputs = scrollContainerRef.current.querySelectorAll('.member-name-input')
+      const lastInput = inputs[inputs.length - 1] as HTMLInputElement
+      if (lastInput) {
+        lastInput.focus()
+        lastInput.select()
+      }
+    }
+    prevLengthRef.current = members.length
+  }, [members.length])
 
   const handleAddMember = () => {
     setMembers([...members, {fullName: 'Thành viên mới', birthYear: new Date().getFullYear(), gender: 'MALE'}])
@@ -127,7 +149,7 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto py-4 pr-2">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto py-4 pr-2">
           <div className="grid gap-4 mb-6 border p-4 rounded bg-muted/20">
             <Label className="font-bold underline mb-2">Thông tin chung</Label>
             <div className="grid grid-cols-2 gap-4">
@@ -173,15 +195,6 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Label className="font-bold underline">Danh sách thành viên ({members.length})</Label>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={handleAddMember}
-                type="button"
-                className="hover:bg-blue-100 hover:text-blue-700 transition-colors"
-              >
-                <Plus className="h-3 w-3 mr-1" /> Thêm nhanh
-              </Button>
             </div>
 
             <div className="border rounded-md">
@@ -206,7 +219,7 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
                           <Input
                             value={member.fullName}
                             onChange={(e) => handleMemberChange(idx, 'fullName', e.target.value)}
-                            className="h-8"
+                            className="h-8 member-name-input"
                           />
                         </TableCell>
                         <TableCell>
@@ -279,6 +292,16 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
         </div>
 
         <DialogFooter className="gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleAddMember}
+            type="button"
+            className="mr-auto border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 transition-all active:scale-95"
+          >
+            <Plus className="h-3.5 w-3.5 mr-1.5" />
+            <span className="font-semibold">Thêm thành viên</span>
+          </Button>
           <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
             Huỷ
           </Button>
