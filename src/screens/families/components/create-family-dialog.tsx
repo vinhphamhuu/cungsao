@@ -46,8 +46,9 @@ export function CreateFamilyDialog({areas, groups}: CreateFamilyDialogProps) {
     const result = await createFamilyAction({name, areaId, groupId})
 
     setIsLoading(false)
-    if (result.success) {
+    if (result.success && result.data) {
       setOpen(false)
+      router.push(`/family/${result.data.id}`)
       router.refresh()
     } else {
       alert('Lỗi: ' + result.error)
