@@ -18,6 +18,7 @@ import {
   Input,
   Label,
 } from '@/components/ui'
+import {capitalizeName} from '@/lib/cung-sao-utils'
 
 interface EditMemberDialogProps {
   member: Member
@@ -34,7 +35,7 @@ export function EditMemberDialog({member}: EditMemberDialogProps) {
     setIsLoading(true)
 
     const formData = new FormData(event.currentTarget)
-    const fullName = formData.get('fullName') as string
+    const fullName = capitalizeName(formData.get('fullName') as string)
     const birthYear = Number(formData.get('birthYear'))
     const genderValue = formData.get('gender') as Gender
 

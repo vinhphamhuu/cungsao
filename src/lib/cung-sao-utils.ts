@@ -240,3 +240,19 @@ export function removeAccents(str: string): string {
     .replace(/[đĐ]/g, (m) => (m === 'đ' ? 'd' : 'D'))
     .toLowerCase()
 }
+
+export function capitalizeName(name: string): string {
+  if (!name) return name
+  const trimmed = name.trim()
+  // Check if the name is already all uppercase
+  if (trimmed === trimmed.toUpperCase() && /[a-zA-Z]/.test(trimmed)) {
+    return trimmed.split(/\s+/).join(' ')
+  }
+
+  return trimmed
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length > 0)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}

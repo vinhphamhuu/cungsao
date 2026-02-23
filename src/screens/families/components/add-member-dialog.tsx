@@ -18,6 +18,7 @@ import {
   Input,
   Label,
 } from '@/components/ui'
+import {capitalizeName} from '@/lib/cung-sao-utils'
 
 export function AddMemberDialog({familyId}: {familyId: string}) {
   const [open, setOpen] = useState(false)
@@ -30,7 +31,7 @@ export function AddMemberDialog({familyId}: {familyId: string}) {
     setIsLoading(true)
 
     const formData = new FormData(event.currentTarget)
-    const fullName = formData.get('fullName') as string
+    const fullName = capitalizeName(formData.get('fullName') as string)
     const birthYear = Number(formData.get('birthYear'))
     const gender = formData.get('gender') as Gender
     const isRepresentative = formData.get('isRepresentative') === 'on'

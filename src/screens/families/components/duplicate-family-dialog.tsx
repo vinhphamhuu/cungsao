@@ -29,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui'
+import {capitalizeName} from '@/lib/cung-sao-utils'
 import {FamilyWithMembers} from '@/types'
 
 interface DuplicateFamilyDialogProps {
@@ -89,7 +90,10 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
       name,
       areaId,
       groupId,
-      members,
+      members: members.map((m) => ({
+        ...m,
+        fullName: capitalizeName(m.fullName),
+      })),
     })
 
     setIsLoading(false)
