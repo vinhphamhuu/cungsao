@@ -52,6 +52,32 @@ export function AddMemberDialog({familyId}: {familyId: string}) {
     }
   }
 
+  const currentYear = new Date().getFullYear()
+  const [birthYear, setBirthYear] = useState<number | ''>(1980)
+  const [age, setAge] = useState<number | ''>(currentYear - 1980 + 1)
+
+  const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value
+    const by = parseInt(val)
+    setBirthYear(val === '' ? '' : by)
+    if (by && by > 0) {
+      setAge(currentYear - by + 1)
+    } else if (val === '') {
+      setAge('')
+    }
+  }
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value
+    const a = parseInt(val)
+    setAge(val === '' ? '' : a)
+    if (a && a > 0) {
+      setBirthYear(currentYear - a + 1)
+    } else if (val === '') {
+      setBirthYear('')
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -59,7 +85,7 @@ export function AddMemberDialog({familyId}: {familyId: string}) {
           <UserPlus className="mr-2 h-4 w-4" /> Thêm Thành Viên
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[550px]">
         <form onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle>Thêm Thành Viên</DialogTitle>
@@ -72,22 +98,44 @@ export function AddMemberDialog({familyId}: {familyId: string}) {
               </Label>
               <Input id="fullName" name="fullName" className="col-span-3" required />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="birthYear" className="text-right">
-                Năm sinh
-              </Label>
-              <Input
-                id="birthYear"
-                name="birthYear"
-                type="number"
-                min="1900"
-                max={new Date().getFullYear()}
-                defaultValue="1980"
-                className="col-span-3"
-                required
-                suppressHydrationWarning
-              />
+
+            <div className="grid grid-cols-4 items-center gap-10">
+              <Label className="text-right font-medium whitespace-nowrap pr-4">Năm Sinh / Tuổi AL</Label>
+              <div className="col-span-3 grid grid-cols-2 gap-2">
+                <div className="relative">
+                  <Input
+                    id="birthYear"
+                    name="birthYear"
+                    type="number"
+                    min="1900"
+                    max={currentYear + 1}
+                    value={birthYear}
+                    onChange={handleBirthYearChange}
+                    className="pr-10 border-blue-200 focus-visible:ring-blue-500"
+                    required
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-blue-500 font-bold pointer-events-none">
+                    NĂM
+                  </span>
+                </div>
+                <div className="relative">
+                  <Input
+                    id="age"
+                    type="number"
+                    min="1"
+                    max="150"
+                    value={age}
+                    onChange={handleAgeChange}
+                    className="pr-10 border-pink-200 focus-visible:ring-pink-500"
+                    placeholder="Tuổi"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-pink-500 font-bold pointer-events-none">
+                    TUỔI
+                  </span>
+                </div>
+              </div>
             </div>
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="gender" className="text-right">
                 Giới tính

@@ -179,70 +179,90 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[40%]">Họ Tên</TableHead>
-                    <TableHead className="w-[20%]">Năm Sinh</TableHead>
-                    <TableHead className="w-[20%]">Giới Tính</TableHead>
+                    <TableHead className="w-[35%]">Họ Tên</TableHead>
+                    <TableHead className="w-[15%] text-blue-600 dark:text-blue-400">Năm Sinh</TableHead>
+                    <TableHead className="w-[15%] text-pink-600 dark:text-pink-400">Tuổi (Âm)</TableHead>
+                    <TableHead className="w-[25%]">Giới Tính</TableHead>
                     <TableHead className="w-[10%]"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {members.map((member, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell>
-                        <Input
-                          value={member.fullName}
-                          onChange={(e) => handleMemberChange(idx, 'fullName', e.target.value)}
-                          className="h-8"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          value={member.birthYear}
-                          onChange={(e) => handleMemberChange(idx, 'birthYear', parseInt(e.target.value))}
-                          className="h-8"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex bg-secondary/50 p-0.5 rounded-md w-fit">
-                          <button
-                            type="button"
-                            onClick={() => handleMemberChange(idx, 'gender', 'MALE')}
-                            className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
-                              member.gender === 'MALE'
-                                ? 'bg-background text-blue-600 dark:text-blue-400 shadow-sm'
-                                : 'text-muted-foreground hover:text-foreground'
-                            }`}
+                  {members.map((member, idx) => {
+                    const currentYear = new Date().getFullYear()
+                    const age = currentYear - member.birthYear + 1
+
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>
+                          <Input
+                            value={member.fullName}
+                            onChange={(e) => handleMemberChange(idx, 'fullName', e.target.value)}
+                            className="h-8"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            type="number"
+                            value={member.birthYear}
+                            onChange={(e) => {
+                              const by = parseInt(e.target.value) || 0
+                              handleMemberChange(idx, 'birthYear', by)
+                            }}
+                            className="h-8 border-blue-200 focus-visible:ring-blue-500"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            type="number"
+                            value={age}
+                            onChange={(e) => {
+                              const a = parseInt(e.target.value) || 0
+                              handleMemberChange(idx, 'birthYear', currentYear - a + 1)
+                            }}
+                            className="h-8 border-pink-200 focus-visible:ring-pink-500"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex bg-secondary/50 p-0.5 rounded-md w-fit">
+                            <button
+                              type="button"
+                              onClick={() => handleMemberChange(idx, 'gender', 'MALE')}
+                              className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
+                                member.gender === 'MALE'
+                                  ? 'bg-background text-blue-600 dark:text-blue-400 shadow-sm'
+                                  : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {member.gender === 'MALE' && <Check className="h-3 w-3" />}
+                              Nam
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleMemberChange(idx, 'gender', 'FEMALE')}
+                              className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
+                                member.gender === 'FEMALE'
+                                  ? 'bg-background text-pink-600 dark:text-pink-400 shadow-sm'
+                                  : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {member.gender === 'FEMALE' && <Check className="h-3 w-3" />}
+                              Nữ
+                            </button>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-red-500"
+                            onClick={() => handleRemoveMember(idx)}
                           >
-                            {member.gender === 'MALE' && <Check className="h-3 w-3" />}
-                            Nam
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleMemberChange(idx, 'gender', 'FEMALE')}
-                            className={`px-2 py-1 rounded-[4px] text-xs font-medium transition-all flex items-center gap-1 ${
-                              member.gender === 'FEMALE'
-                                ? 'bg-background text-pink-600 dark:text-pink-400 shadow-sm'
-                                : 'text-muted-foreground hover:text-foreground'
-                            }`}
-                          >
-                            {member.gender === 'FEMALE' && <Check className="h-3 w-3" />}
-                            Nữ
-                          </button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-red-500"
-                          onClick={() => handleRemoveMember(idx)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
