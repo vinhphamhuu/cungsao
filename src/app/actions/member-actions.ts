@@ -1,9 +1,9 @@
 'use server'
 
-import {Member} from '@prisma/client'
+import {Member, Prisma} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
 
-import {calculateSao, createId, prisma} from '@/lib'
+import {calculateSao, createId, prisma, removeAccents} from '@/lib'
 import {ActionResponse, CreateMemberDTO} from '@/types'
 
 export type GetMembersParams = {
@@ -20,45 +20,28 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
   const skip = (page - 1) * pageSize
   const take = pageSize
 
-  // Base where condition
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const where: any = {}
-
-  if (name) {
-    where.OR = [
-      {fullName: {contains: name, mode: 'insensitive'}},
-      {family: {name: {contains: name, mode: 'insensitive'}}},
-    ]
-  }
-
+  // Base where condition for Area and Group (DB-level filtering)
+  const familyFilter: Prisma.FamilyWhereInput = {}
   if (areaId && areaId !== 'ALL') {
-    where.family = {...where.family, areaId: areaId}
+    familyFilter.areaId = areaId
   }
-
   if (groupId && groupId !== 'ALL') {
-    where.family = {...where.family, groupId: groupId}
+    familyFilter.groupId = groupId
   }
 
-  // Handle 'sao' filtering
-  // If filtering by Sao, we need to filter in memory somewhat or use complex query logic.
-  // Since 'calculateSao' is complex logic involving modulo arithmetic,
-  // we first fetch potential candidates or all if searching globally.
-  // Strategy:
-  // 1. If Sao filter is set:
-  //    - If Name/Area/Group are also set, we fetch based on those first (usually much smaller set).
-  //    - Then filter by Sao in memory.
-  //    - Then paginate in memory.
-  // 2. If Sao filter is NOT set:
-  //    - Use DB pagination.
+  const where: Prisma.MemberWhereInput = {}
+  if (Object.keys(familyFilter).length > 0) {
+    where.family = familyFilter
+  }
 
-  if (sao && sao !== 'ALL') {
-    // 1. Fetch only essential fields for Sao calculation to filter
+  // If we have name or sao, we need to do in-memory filtering or fetch all candidates
+  const hasInmemoryFilters = (name && name.trim() !== '') || (sao && sao !== 'ALL')
+
+  if (hasInmemoryFilters) {
     const candidates = await prisma.member.findMany({
       where,
-      select: {
-        id: true,
-        birthYear: true,
-        gender: true,
+      include: {
+        family: true,
       },
       orderBy: {
         birthYear: 'asc',
@@ -66,21 +49,41 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
     })
 
     const currentYear = new Date().getFullYear()
+    const normalizedQuery = name ? removeAccents(name) : ''
 
-    // 2. Filter by Sao in memory
-    const filteredIds = candidates
-      .filter((m) => {
+    const filtered = candidates.filter((m) => {
+      // Name filter (accent-insensitive)
+      if (normalizedQuery) {
+        const normalizedFullName = removeAccents(m.fullName)
+        const normalizedFamilyName = removeAccents(m.family.name)
+        if (!normalizedFullName.includes(normalizedQuery) && !normalizedFamilyName.includes(normalizedQuery)) {
+          return false
+        }
+      }
+
+      // Sao filter
+      if (sao && sao !== 'ALL') {
         const calculatedSao = calculateSao(m.birthYear, m.gender, currentYear)
-        return calculatedSao === sao
-      })
-      .map((m) => m.id)
+        if (calculatedSao !== sao) return false
+      }
 
-    const total = filteredIds.length
+      return true
+    })
 
-    // 3. Paginate
-    const paginatedIds = filteredIds.slice(skip, skip + take)
+    const total = filtered.length
+    const paginatedItems = filtered.slice(skip, skip + take)
 
-    // 4. Fetch full data for the current page
+    // Since we already have the full data from findMany candidates (with family),
+    // we might just need to ensure consistency.
+    // For large datasets, fetching 'id' first is better.
+    // But candidate set is already filtered by Area/Group in DB.
+
+    // To be efficient, we already included basic family info.
+    // Let's fetch the full include structure for the final page if needed,
+    // or just use what we have if it's enough.
+    // The original code re-fetches with full includes for the paginated page.
+
+    const paginatedIds = paginatedItems.map((m) => m.id)
     const data = await prisma.member.findMany({
       where: {
         id: {in: paginatedIds},
@@ -93,7 +96,6 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
           },
         },
       },
-      // Preserve order roughly by birthYear as in candidates
       orderBy: {
         birthYear: 'asc',
       },
@@ -102,7 +104,7 @@ export async function getMembers({page = 1, pageSize = 20, name, areaId, groupId
     return {data, total}
   }
 
-  // Standard DB pagination path
+  // Standard DB pagination path (when no name or sao filter)
   const [total, data] = await prisma.$transaction([
     prisma.member.count({where}),
     prisma.member.findMany({

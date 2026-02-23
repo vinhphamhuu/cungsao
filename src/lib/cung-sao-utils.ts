@@ -232,3 +232,11 @@ export function calculateHan(): string {
   // Cycle 8?
   return 'TBD'
 }
+
+export function removeAccents(str: string): string {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, (m) => (m === 'đ' ? 'd' : 'D'))
+    .toLowerCase()
+}

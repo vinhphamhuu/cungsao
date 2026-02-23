@@ -3,7 +3,7 @@
 import {Family, Prisma} from '@prisma/client'
 import {revalidatePath} from 'next/cache'
 
-import {createId, prisma} from '@/lib'
+import {createId, prisma, removeAccents} from '@/lib'
 import {ActionResponse, CreateFamilyDTO, CreateFamilyWithMembersDTO, FamilyWithMembers} from '@/types'
 
 export async function getFamilies(
@@ -15,17 +15,43 @@ export async function getFamilies(
 ): Promise<FamilyWithMembers[]> {
   const where: Prisma.FamilyWhereInput = {}
 
-  if (query) {
-    where.OR = [
-      {name: {contains: query, mode: 'insensitive' as const}},
-      {representative: {fullName: {contains: query, mode: 'insensitive' as const}}},
-    ]
-  }
-
   if (areaId) where.areaId = areaId
   if (groupId) where.groupId = groupId
 
-  return await prisma.family.findMany({
+  if (query && query.trim() !== '') {
+    const normalizedQuery = removeAccents(query)
+
+    // Fetch candidates with necessary fields for filtering
+    const candidates = await prisma.family.findMany({
+      where,
+      include: {
+        group: true,
+        area: true,
+        representative: true,
+        members: {
+          select: {
+            id: true,
+            fullName: true,
+            birthYear: true,
+            gender: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    const filtered = candidates.filter((f) => {
+      const normalizedName = removeAccents(f.name)
+      const normalizedRep = f.representative ? removeAccents(f.representative.fullName) : ''
+      return normalizedName.includes(normalizedQuery) || normalizedRep.includes(normalizedQuery)
+    })
+
+    return filtered.slice(skip, skip + take) as FamilyWithMembers[]
+  }
+
+  return (await prisma.family.findMany({
     where,
     include: {
       group: true,
@@ -45,7 +71,7 @@ export async function getFamilies(
     },
     skip,
     take,
-  })
+  })) as FamilyWithMembers[]
 }
 
 // For now, let's implement structured actions accepting objects or FormData.
