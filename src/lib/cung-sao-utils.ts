@@ -59,14 +59,14 @@ export const STAR_DATA: StarInfo[] = [
   },
   {
     id: 5,
-    name: 'Vân Hán',
+    name: 'Vân Hớn',
     color: '#FFD700',
     icon: '🏹',
     type: 'Trung tinh',
     note: 'Phòng thương tật, khẩu thiệt',
     element: 'Hỏa',
     description:
-      'Sao Vân Hán là sao trung tính, chủ về thủ cựu bình an, đề phòng khẩu thiệt, kiện tụng. Kỵ tháng Tư và tháng Tám.',
+      'Sao Vân Hớn là sao trung tính, chủ về thủ cựu bình an, đề phòng khẩu thiệt, kiện tụng. Kỵ tháng Tư và tháng Tám.',
   },
   {
     id: 6,
@@ -129,11 +129,11 @@ export function getSaoColor(sao: string): string {
 
 // FEMALE:
 // 10: Kế Đô (6)
-// 11: Vân Hán (5) -- Wait, Female order is different or reverse?
+// 11: Vân Hớn (5) -- Wait, Female order is different or reverse?
 // Let's check a reliable source table.
 // Female:
 // 10: Kế Đô
-// 11: Vân Hán
+// 11: Vân Hớn
 // 12: Mộc Đức
 // 13: Thái Âm
 // 14: Thổ Tú
@@ -142,7 +142,7 @@ export function getSaoColor(sao: string): string {
 // 17: Thái Bạch
 // 18: Thủy Diệu
 // Flow:
-// Kế Đô (6) -> Vân Hán (5) -> Mộc Đức (8) ??? No, 5 -> 8 is +3?
+// Kế Đô (6) -> Vân Hớn (5) -> Mộc Đức (8) ??? No, 5 -> 8 is +3?
 // Let's use a fixed lookup array for indices to be safe.
 
 export const AGE_REMAINDER_MAP_MALE = [
@@ -151,17 +151,17 @@ export const AGE_REMAINDER_MAP_MALE = [
   'Thủy Diệu', // 12 (0) -> wait 12+9=21 Thủy Diệu. (10, 19, 28... La Hầu)
   'Thái Bạch',
   'Thái Dương',
-  'Vân Hán',
+  'Vân Hớn',
   'Kế Đô',
   'Thái Âm',
   'Mộc Đức',
 ]
-// Male pattern: La Hầu -> Thổ Tú -> Thủy Diệu -> Thái Bạch -> Thái Dương -> Vân Hán -> Kế Đô -> Thái Âm -> Mộc Đức
+// Male pattern: La Hầu -> Thổ Tú -> Thủy Diệu -> Thái Bạch -> Thái Dương -> Vân Hớn -> Kế Đô -> Thái Âm -> Mộc Đức
 // It cycles forward.
 
 export const AGE_REMAINDER_MAP_FEMALE = [
   'Kế Đô', // 10
-  'Vân Hán', // 11
+  'Vân Hớn', // 11
   'Mộc Đức', // 12
   'Thái Âm', // 13
   'Thổ Tú', // 14
