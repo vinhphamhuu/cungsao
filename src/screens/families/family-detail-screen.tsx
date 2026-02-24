@@ -5,7 +5,7 @@ import {notFound} from 'next/navigation'
 
 import {getAreas, getGroups} from '@/app/actions'
 import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
-import {prisma} from '@/lib'
+import {prisma, sortFamilyMembers} from '@/lib'
 
 import {
   AddMemberDialog,
@@ -75,7 +75,7 @@ export async function FamilyDetailScreen({params}: FamilyDetailScreenProps) {
           <AddMemberDialog familyId={family.id} />
         </CardHeader>
         <CardContent>
-          <MemberList members={family.members as Member[]} />
+          <MemberList members={sortFamilyMembers(family.members, family.representativeId) as Member[]} />
         </CardContent>
       </Card>
     </div>

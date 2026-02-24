@@ -256,3 +256,17 @@ export function capitalizeName(name: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
+
+export function sortFamilyMembers<T extends {birthYear: number; id: string}>(
+  members: T[],
+  representativeId: string | null | undefined,
+): T[] {
+  if (!members) return []
+  return [...members].sort((a, b) => {
+    if (representativeId) {
+      if (a.id === representativeId) return -1
+      if (b.id === representativeId) return 1
+    }
+    return a.birthYear - b.birthYear
+  })
+}

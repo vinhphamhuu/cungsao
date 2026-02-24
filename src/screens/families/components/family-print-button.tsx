@@ -4,7 +4,7 @@ import {Area, Family, Group, Member} from '@prisma/client'
 import {Printer} from 'lucide-react'
 
 import {Button} from '@/components/ui'
-import {calculateSao} from '@/lib'
+import {calculateSao, sortFamilyMembers} from '@/lib'
 
 interface FamilyWithDetails extends Family {
   area: Area | null
@@ -22,7 +22,7 @@ export function FamilyPrintButton({family}: FamilyPrintButtonProps) {
   }
 
   const currentYear = new Date().getFullYear()
-  const members = (family.members || []) as Member[]
+  const members = sortFamilyMembers((family.members || []) as Member[], family.representativeId)
 
   // Fill up to 20 rows to match the "sớ" aesthetic
   const displayRows = [...members]
