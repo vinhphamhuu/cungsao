@@ -4,7 +4,7 @@ import {Area, Family, Group, Member} from '@prisma/client'
 import {Printer} from 'lucide-react'
 
 import {Button} from '@/components/ui'
-import {calculateSao, sortFamilyMembers} from '@/lib'
+import {calculateSao, getLunarYearName, sortFamilyMembers} from '@/lib'
 
 interface FamilyWithDetails extends Family {
   area: Area | null
@@ -174,7 +174,7 @@ export function FamilyPrintButton({family}: FamilyPrintButtonProps) {
 
           <div className="footer-text mx-auto max-w-[90%]">
             Hiệp gia quyến tín chủ đại tiểu đẳng tức nhựt phần hương tâm thành khấu bái thánh ân chứng minh vĩ văn cẩn
-            sớ tề thứ {currentYear} niên phụng vì tín chủ khấu bái thượng sớ.
+            sớ tề thứ <strong>{getLunarYearName(currentYear)}</strong> niên phụng vì tín chủ khấu bái thượng sớ.
           </div>
         </div>
       </div>

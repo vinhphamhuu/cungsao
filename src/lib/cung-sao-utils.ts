@@ -270,3 +270,10 @@ export function sortFamilyMembers<T extends {birthYear: number; id: string}>(
     return a.birthYear - b.birthYear
   })
 }
+
+export function getLunarYearName(year: number): string {
+  const can = ['Canh', 'Tân', 'Nhâm', 'Quý', 'Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ']
+  const chi = ['Thân', 'Dậu', 'Tuất', 'Hợi', 'Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi']
+
+  return `${can[year % 10]} ${chi[year % 12]}`
+}
