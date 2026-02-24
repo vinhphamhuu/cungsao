@@ -94,17 +94,34 @@ export async function createFamilyAction(data: CreateFamilyDTO): Promise<ActionR
   }
 }
 
-export async function updateFamilyAction(id: string, data: Partial<CreateFamilyDTO>): Promise<ActionResponse<Family>> {
+export async function updateFamilyAction(
+  id: string,
+  data: Partial<CreateFamilyDTO>,
+): Promise<ActionResponse<FamilyWithMembers>> {
   try {
     const family = await prisma.family.update({
       where: {id},
       data: {
         ...data,
       },
+      include: {
+        group: true,
+        area: true,
+        representative: true,
+        members: {
+          select: {
+            id: true,
+            fullName: true,
+            birthYear: true,
+            gender: true,
+          },
+        },
+      },
     })
     revalidatePath('/')
-    return {success: true, data: family}
-  } catch {
+    return {success: true, data: family as unknown as FamilyWithMembers}
+  } catch (error) {
+    console.error('Update family error:', error)
     return {success: false, error: 'Failed to update family'}
   }
 }

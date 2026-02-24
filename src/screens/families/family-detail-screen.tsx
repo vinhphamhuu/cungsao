@@ -7,7 +7,14 @@ import {getAreas, getGroups} from '@/app/actions'
 import {Button, Card, CardContent, CardHeader, CardTitle} from '@/components/ui'
 import {prisma} from '@/lib'
 
-import {AddMemberDialog, DuplicateFamilyDialog, FamilyPrintButton, FamilyQR, MemberList} from './components'
+import {
+  AddMemberDialog,
+  DuplicateFamilyDialog,
+  EditFamilyDialog,
+  FamilyPrintButton,
+  FamilyQR,
+  MemberList,
+} from './components'
 
 interface FamilyDetailScreenProps {
   params: Promise<{
@@ -56,6 +63,7 @@ export async function FamilyDetailScreen({params}: FamilyDetailScreenProps) {
         </div>
         <div className="ml-auto flex items-center gap-2">
           <FamilyPrintButton family={family} />
+          <EditFamilyDialog areas={areas} family={family} groups={groups} />
           <DuplicateFamilyDialog areas={areas} groups={groups} showText sourceFamily={family} />
           <FamilyQR familyId={family.id} familyName={family.name} />
         </div>

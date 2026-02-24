@@ -1,6 +1,7 @@
 export * from './add-member-dialog'
 export * from './create-family-dialog'
 export * from './duplicate-family-dialog'
+export * from './edit-family-dialog'
 export * from './edit-member-dialog'
 export * from './family-delete-button'
 export * from './family-filters'

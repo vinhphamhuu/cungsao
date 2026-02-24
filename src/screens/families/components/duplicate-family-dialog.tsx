@@ -136,7 +136,16 @@ export function DuplicateFamilyDialog({sourceFamily, areas, groups, showText}: D
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={showText ? 'outline' : 'ghost'} size="sm" title="Nhân bản" className={showText ? 'gap-2' : ''}>
+        <Button
+          variant={showText ? 'outline' : 'ghost'}
+          size="sm"
+          title="Nhân bản"
+          className={
+            showText
+              ? 'gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:text-blue-400 dark:border-blue-900 dark:hover:bg-blue-900/40'
+              : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20'
+          }
+        >
           <Copy className="h-4 w-4" />
           {showText && <span>Nhân bản</span>}
         </Button>

@@ -10,6 +10,7 @@ import {Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow} f
 import {FamilyWithMembers} from '@/types'
 
 import {DuplicateFamilyDialog} from './duplicate-family-dialog'
+import {EditFamilyDialog} from './edit-family-dialog'
 import {FamilyDeleteButton} from './family-delete-button'
 import {FamilyNameTooltip} from './family-name-tooltip'
 
@@ -32,6 +33,10 @@ export function FamilyList({initialFamilies, areas, groups, query, areaId, group
 
   const handleRemoveFamily = (familyId: string) => {
     setFamilies((prev) => prev.filter((f) => f.id !== familyId))
+  }
+
+  const handleUpdateFamily = (updatedFamily: FamilyWithMembers) => {
+    setFamilies((prev) => prev.map((f) => (f.id === updatedFamily.id ? updatedFamily : f)))
   }
 
   const loadMore = async () => {
@@ -94,6 +99,13 @@ export function FamilyList({initialFamilies, areas, groups, query, areaId, group
                         redirect={false}
                         onSuccess={() => handleRemoveFamily(family.id)}
                         iconOnly
+                      />
+                      <EditFamilyDialog
+                        family={family}
+                        areas={areas}
+                        groups={groups}
+                        iconOnly
+                        onSuccess={handleUpdateFamily}
                       />
                       <DuplicateFamilyDialog areas={areas} groups={groups} sourceFamily={family} />
                       <Button asChild size="sm" variant="ghost">

@@ -26,7 +26,11 @@ export function FamilyQR({familyId, familyName}: FamilyQRProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:text-blue-400 dark:border-blue-900 dark:hover:bg-blue-900/40"
+        >
           <QrCode className="h-4 w-4" />
           Mã QR
         </Button>
